@@ -1,9 +1,201 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Turing Machine</title>
-    </head>
-    <body>
-        Hello World!
-    </body>
+<head>
+    <title>Turing Machine Simulator</title>
+    <style>
+        .cell {
+            display: inline-block;
+            border: 1px solid black;
+            padding: 5px;
+            margin: 2px;
+        }
+    </style>
+</head>
+<body>
+    <label for="input-string">Input String:</label>
+    <input type="text" id="input-string">
+    <button id="input-sim" onclick="simulate()">Simulate</button>
+    <button id="input-step" onclick="step()" disabled>Step</button>
+    <button id="input-reset" onclick="reset()" disabled>Reset</button>
+
+    <div id="output"></div>
+
+    <script>
+        let tapehead, state;
+        let tape = [];
+        let stepCount = 0;
+        let output = document.getElementById("output");
+
+        const action = (input_char, replace_with, move, new_state) => {
+            if (tape[tapehead] === input_char) {
+                tape[tapehead] = replace_with;
+                state = new_state;
+                if (move === 'L') {
+                    tapehead -= 1;
+                } else {
+                    tapehead += 1;
+                }
+                return true;
+            }
+            return false;
+        };
+
+        function display() {
+            output.innerHTML = '';
+            for (let x = 0; x < tape.length; x++) {
+                let cell = document.createElement("div");
+                cell.classList.add("cell");
+                cell.textContent = tape[x] + " ";
+                if (x === tapehead) {
+                    cell.style.backgroundColor = "yellow";
+                }
+                output.appendChild(cell);
+            }
+        }
+
+        function simulate() {
+            // disable button
+            document.getElementById("input-sim").disabled = true;
+            document.getElementById("input-step").disabled = false;
+            document.getElementById("input-reset").disabled = false;
+
+            // clear output
+            output.innerHTML = '';
+
+            // clear tape
+            tape = [];
+
+            // get input string
+            let inputString = document.getElementById("input-string").value;
+            let length = inputString.length * 3;
+
+            // initialize tape
+            tape = Array(length).fill('B');
+            let i = 1;
+            tapehead = 1;
+            for (let s of inputString) {
+                tape[i] = s;
+                i += 1;
+            }
+
+            // initialize state
+            state = 1;
+            stepCount = 0;
+
+            // display initial tape
+            display();
+        }
+
+        function step() {
+            if (state === 18) {
+                // machine halted
+                document.getElementById("input-step").disabled = true;
+            } else {
+                // perform one step
+                stepCount += 1;
+
+                let oldtapehead = tapehead;
+
+                if (state === 1) {
+                    if (action('+', 'B', 'R', 2) || action('-', 'B', 'R', 3)) {
+                        // do nothing
+                    }
+                } else if (state === 2) {
+                    if (action('0', '0', 'R', 2) || action('+', '1', 'R', 4) || action('-', '1', 'R', 5)) {
+                        // do nothing
+                    }
+                } else if (state === 3) {
+                    if (action('0', '0', 'R', 3) || action('+', '1', 'R', 5) || action('-', '1', 'R', 4)) {
+                        // do nothing
+                    }
+                } else if (state === 4) {
+                    if (action('1', '1', 'R', 4) || action('0', '0', 'R', 4) || action('B', '+', 'L', 6)) {
+                        // do nothing
+                    }
+                } else if (state === 5) {
+                    if (action('1', '1', 'R', 5) || action('0', '0', 'R', 5) || action('B', '-', 'L', 6)) {
+                        // do nothing
+                    }
+                } else if (state === 6) {
+                    if (action('1', '1', 'L', 6) || action('0', '0', 'L', 6) || action('B', 'B', 'R', 7)) {
+                        // do nothing
+                    }
+                } else if (state === 7) {
+                    if (action('1', 'B', 'R', 16) || action('0', 'B', 'R', 8)) {
+                        // do nothing
+                    }
+                } else if (state === 8) {
+                    if (action('0', '0', 'R', 8) || action('1', '1', 'R', 9)) {
+                        // do nothing
+                    }
+                } else if (state === 9) {
+                    if (action('0', 'X', 'R', 10) || action('1', '1', 'L', 14)) {
+                        // do nothing
+                    }
+                } else if (state === 10) {
+                    if (action('0', '0', 'R', 10) || action('1', '1', 'R', 11)) {
+                        // do nothing
+                    }
+                } else if (state === 11) {
+                    if (action('0', '0', 'R', 11) || action('+', '+', 'R', 11) || action('-', '-', 'R', 11) || action('B', '0', 'L', 12)) {
+                        // do nothing
+                    }
+                } else if (state === 12) {
+                    if (action('0', '0', 'L', 12) || action('+', '+', 'L', 12) || action('-', '-', 'L', 12) || action('1', '1', 'L', 13)) {
+                        // do nothing
+                    }
+                } else if (state === 13) {
+                    if (action('0', '0', 'L', 13) || action('X', 'X', 'R', 9)) {
+                        // do nothing
+                    }
+                } else if (state === 14) {
+                    if (action('X', '0', 'L', 14) || action('1', '1', 'L', 15)) {
+                        // do nothing
+                    }
+                } else if (state === 15) {
+                    if (action('0', '0', 'L', 15) || action('B', 'B', 'R', 7)) {
+                        // do nothing
+                    }
+                } else if (state === 16) {
+                    if (action('0', 'B', 'R', 16) || action('1', 'B', 'R', 17)) {
+                        // do nothing
+                    }
+                } else if (state === 17) {
+                    if (action('0', '0', 'R', 17) || action('+', '+', 'R', 17) || action('-', '-', 'R', 17) || action('B', '1', 'R', 18)) {
+                        // do nothing
+                    }
+                }
+
+                if (oldtapehead === tapehead) {
+                    // machine halted
+                    document.getElementById("input-step").disabled = true;
+                }
+
+                // display tape after one step
+                display();
+
+                if (state === 18) {
+                    // machine halted
+                    console.log("String accepted on state =", state);
+                }
+            }
+        }
+
+        function reset() {
+            // disable button
+            document.getElementById("input-reset").disabled = true;
+            document.getElementById("input-step").disabled = true;
+            document.getElementById("input-sim").disabled = false;
+
+            // clear output
+            output.innerHTML = '';
+
+            // clear tape
+            tape = [];
+
+            // clear input string
+            document.getElementById("input-string").value = '';
+        }
+    </script>
+</body>
 </html>
