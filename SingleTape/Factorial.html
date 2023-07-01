@@ -182,15 +182,24 @@
             opacity: 1;
             font-size: xx-large;
         }
+
+        #nav {
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 
 <body>
-    <h2>Factorial</h2>
+    <nav>
+        <h2>
+            <a href="../index.html" id="nav">Factorial</a>
+        </h2>
+    </nav>
     <div id="input-form">
         <div class="text-desc">String</div>
         <div id="input-container">
-            <input type="text" id="input-string" placeholder="0* 1">
+            <input type="text" id="input-string" placeholder="0*1">
         </div>
         <div id="btn-container">
             <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
@@ -495,97 +504,97 @@
                     //detek ora obah
                     obah = false;
 
-                    switch(state) {
+                    switch (state) {
                         case 1:
-                            if(tape[head] === '0') action('X', 'R', 2);
-                            else if(tape[head] === '1') action('1', 'R', 6);
+                            if (tape[head] === '0') action('X', 'R', 2);
+                            else if (tape[head] === '1') action('1', 'R', 6);
                             break;
                         case 2:
-                            if(tape[head] === '0') action('0', 'R', 2);
-                            else if(tape[head] === '1') action('1', 'R', 3);
+                            if (tape[head] === '0') action('0', 'R', 2);
+                            else if (tape[head] === '1') action('1', 'R', 3);
                             break;
                         case 3:
-                            if(tape[head] === '0') action('0', 'R', 3);
-                            else if(tape[head] === 'B') action('0', 'L', 4);
+                            if (tape[head] === '0') action('0', 'R', 3);
+                            else if (tape[head] === 'B') action('0', 'L', 4);
                             break;
                         case 4:
-                            if(tape[head] === '0') action('0', 'L', 4);
-                            else if(tape[head] === '1') action('1', 'L', 5);
+                            if (tape[head] === '0') action('0', 'L', 4);
+                            else if (tape[head] === '1') action('1', 'L', 5);
                             break;
                         case 5:
-                            if(tape[head] === '0') action('0', 'L', 5);
-                            else if(tape[head] === 'X') action('X', 'R', 1);
+                            if (tape[head] === '0') action('0', 'L', 5);
+                            else if (tape[head] === 'X') action('X', 'R', 1);
                             break;
                         case 6:
-                            if(tape[head] === '0') action('0', 'R', 6);
-                            else if(tape[head] === 'B') action('B', 'L', 7);
+                            if (tape[head] === '0') action('0', 'R', 6);
+                            else if (tape[head] === 'B') action('B', 'L', 7);
                             break;
                         case 7:
-                            if(tape[head] === '0') action('1', 'L', 8);
+                            if (tape[head] === '0') action('1', 'L', 8);
                             break;
                         case 8:
-                            if(tape[head] === '0') action('0', 'L', 9);
-                            else if(tape[head] === '1') action('1', 'R', 10);
+                            if (tape[head] === '0') action('0', 'L', 9);
+                            else if (tape[head] === '1') action('1', 'R', 10);
                             break;
                         case 9:
-                            if(tape[head] === '0') action('0', 'L', 9);
-                            else if(tape[head] === '1') action('1', 'R', 1);
+                            if (tape[head] === '0') action('0', 'L', 9);
+                            else if (tape[head] === '1') action('1', 'R', 1);
                             break;
                         case 10:
-                            if(tape[head] === '1') action('B', 'L', 11);
+                            if (tape[head] === '1') action('B', 'L', 11);
                             break;
                         case 11:
-                            if(tape[head] === '1') action('1', 'L', 11);
-                            else if(tape[head] === 'X') action('0', 'L', 11);
-                            else if(tape[head] === 'B') action('B', 'R', 12);
+                            if (tape[head] === '1') action('1', 'L', 11);
+                            else if (tape[head] === 'X') action('0', 'L', 11);
+                            else if (tape[head] === 'B') action('B', 'R', 12);
                             break;
                         case 12:
-                            if(tape[head] === '0') action('B', 'R', 13);
-                            else if(tape[head] === '1') action('B', 'R', 19);
+                            if (tape[head] === '0') action('B', 'R', 13);
+                            else if (tape[head] === '1') action('B', 'R', 19);
                             break;
                         case 13:
-                            if(tape[head] === '0') action('0', 'R', 13);
-                            else if(tape[head] === '1') action('1', 'R', 14);
+                            if (tape[head] === '0') action('0', 'R', 13);
+                            else if (tape[head] === '1') action('1', 'R', 14);
                             break;
                         case 14:
-                            if(tape[head] === '0') action('X', 'R', 15);
-                            else if(tape[head] === '1') action('1', 'L', 17);
-                            else if(tape[head] === 'B') action('1', 'L', 22);
+                            if (tape[head] === '0') action('X', 'R', 15);
+                            else if (tape[head] === '1') action('1', 'L', 17);
+                            else if (tape[head] === 'B') action('1', 'L', 22);
                             break;
                         case 15:
-                            if(tape[head] === '0') action('0', 'R', 15);
-                            else if(tape[head] === '1') action('1', 'R', 15);
-                            else if(tape[head] === 'B') action('0', 'L', 16);
+                            if (tape[head] === '0') action('0', 'R', 15);
+                            else if (tape[head] === '1') action('1', 'R', 15);
+                            else if (tape[head] === 'B') action('0', 'L', 16);
                             break;
                         case 16:
-                            if(tape[head] === '0') action('0', 'L', 16);
-                            else if(tape[head] === '1') action('1', 'L', 16);
-                            else if(tape[head] === 'X') action('X', 'R', 14);
+                            if (tape[head] === '0') action('0', 'L', 16);
+                            else if (tape[head] === '1') action('1', 'L', 16);
+                            else if (tape[head] === 'X') action('X', 'R', 14);
                             break;
                         case 17:
-                            if(tape[head] === 'X') action('0', 'L', 17);
-                            else if(tape[head] === '1') action('1', 'L', 18);
+                            if (tape[head] === 'X') action('0', 'L', 17);
+                            else if (tape[head] === '1') action('1', 'L', 18);
                             break;
                         case 18:
-                            if(tape[head] === '0') action('0', 'L', 18);
-                            else if(tape[head] === 'B') action('B', 'R', 12);
+                            if (tape[head] === '0') action('0', 'L', 18);
+                            else if (tape[head] === 'B') action('B', 'R', 12);
                             break;
                         case 19:
-                            if(tape[head] === '0') action('B', 'R', 19);
-                            else if(tape[head] === '1') action('B', 'R', 20);
+                            if (tape[head] === '0') action('B', 'R', 19);
+                            else if (tape[head] === '1') action('B', 'R', 20);
                             break;
                         case 20:
-                            if(tape[head] === '0') action('0', 'R', 20);
-                            else if(tape[head] === '1') action('1', 'R', 20);
-                            else if(tape[head] === 'B') action('1', 'L', 21);
+                            if (tape[head] === '0') action('0', 'R', 20);
+                            else if (tape[head] === '1') action('1', 'R', 20);
+                            else if (tape[head] === 'B') action('1', 'L', 21);
                             break;
                         case 21:
-                            if(tape[head] === '0') action('0', 'L', 21);
-                            else if(tape[head] === '1') action('1', 'L', 21);
-                            else if(tape[head] === 'B') action('B', 'R', 12);
+                            if (tape[head] === '0') action('0', 'L', 21);
+                            else if (tape[head] === '1') action('1', 'L', 21);
+                            else if (tape[head] === 'B') action('B', 'R', 12);
                             break;
                         case 22:
-                            if(tape[head] === '1') action('0', 'R', 23);
+                            if (tape[head] === '1') action('0', 'R', 23);
                             break;
                     }
 

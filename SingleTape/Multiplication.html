@@ -182,15 +182,24 @@
             opacity: 1;
             font-size: xx-large;
         }
+
+        #nav {
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 
 <body>
-    <h2>Multiplication</h2>
+    <nav>
+        <h2>
+            <a href="../index.html" id="nav">Multiplication</a>
+        </h2>
+    </nav>
     <div id="input-form">
         <div class="text-desc">String</div>
         <div id="input-container">
-            <input type="text" id="input-string" placeholder="[+-] 0* [+-] 0* 1">
+            <input type="text" id="input-string" placeholder="[+-]0*[+-]0*1">
         </div>
         <div id="btn-container">
             <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
