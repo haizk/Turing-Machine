@@ -182,15 +182,24 @@
             opacity: 1;
             font-size: xx-large;
         }
+
+        #nav {
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 
 <body>
-    <h2>Subraction</h2>
+    <nav>
+        <h2>
+            <a href="../index.html" id="nav">Subtraction</a>
+        </h2>
+    </nav>
     <div id="input-form">
         <div class="text-desc">String</div>
         <div id="input-container">
-            <input type="text" id="input-string" placeholder="[+-] 0* [+-] 0* 1">
+            <input type="text" id="input-string" placeholder="[+-]0*[+-]0*">
         </div>
         <div id="btn-container">
             <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
@@ -419,7 +428,7 @@
 
         function init() {
             //asep setate
-            acceptingState = 18;
+            acceptingState = 21;
 
             //head index mulai dari 5 biar kirinya ada B
             head = 15;
@@ -495,101 +504,101 @@
                     //detek ora obah
                     obah = false;
 
-                    switch(state) {
+                    switch (state) {
                         case 1:
-                            if(tape[head] === '+') action('+', 'R', 2);
-                            else if(tape[head] === '-') action('-', 'R', 3);
+                            if (tape[head] === '+') action('+', 'R', 2);
+                            else if (tape[head] === '-') action('-', 'R', 3);
                             break;
                         case 2:
-                            if(tape[head] === '0') action('0', 'R', 2);
-                            else if(tape[head] === '+') action('+', 'L', 9);
-                            else if(tape[head] === '-') action('-', 'L', 4);
+                            if (tape[head] === '0') action('0', 'R', 2);
+                            else if (tape[head] === '+') action('+', 'L', 9);
+                            else if (tape[head] === '-') action('-', 'L', 4);
                             break;
                         case 3:
-                            if(tape[head] === '0') action('0', 'R', 3);
-                            else if(tape[head] === '-') action('-', 'L', 9);
-                            else if(tape[head] === '+') action('+', 'L', 4);
+                            if (tape[head] === '0') action('0', 'R', 3);
+                            else if (tape[head] === '-') action('-', 'L', 9);
+                            else if (tape[head] === '+') action('+', 'L', 4);
                             break;
                         case 4:
-                            if(tape[head] === '0') action('0', 'L', 4);
-                            else if(tape[head] === '+') action('B', 'R', 5);
-                            else if(tape[head] === '-') action('B', 'R', 5);
+                            if (tape[head] === '0') action('0', 'L', 4);
+                            else if (tape[head] === '+') action('B', 'R', 5);
+                            else if (tape[head] === '-') action('B', 'R', 5);
                             break;
                         case 5:
-                            if(tape[head] === '+') action('-', 'R', 8);
-                            else if(tape[head] === '-') action('+', 'R', 8);
-                            else if(tape[head] === '0') action('B', 'R', 6);
+                            if (tape[head] === '+') action('-', 'R', 8);
+                            else if (tape[head] === '-') action('+', 'R', 8);
+                            else if (tape[head] === '0') action('B', 'R', 6);
                             break;
                         case 6:
-                            if(tape[head] === '0') action('0', 'R', 6);
-                            else if(tape[head] === '+') action('+', 'R', 6);
-                            else if(tape[head] === '-') action('-', 'R', 6);
-                            else if(tape[head] === 'B') action('0', 'L', 7);
+                            if (tape[head] === '0') action('0', 'R', 6);
+                            else if (tape[head] === '+') action('+', 'R', 6);
+                            else if (tape[head] === '-') action('-', 'R', 6);
+                            else if (tape[head] === 'B') action('0', 'L', 7);
                             break;
                         case 7:
-                            if(tape[head] === '0') action('0', 'L', 7);
-                            else if(tape[head] === '+') action('+', 'L', 7);
-                            else if(tape[head] === '-') action('-', 'L', 7);
-                            else if(tape[head] === 'B') action('B', 'R', 5);
+                            if (tape[head] === '0') action('0', 'L', 7);
+                            else if (tape[head] === '+') action('+', 'L', 7);
+                            else if (tape[head] === '-') action('-', 'L', 7);
+                            else if (tape[head] === 'B') action('B', 'R', 5);
                             break;
                         case 8:
-                            if(tape[head] === '0') action('0', 'R', 8);
-                            else if(tape[head] === 'B') action('1', 'R', 21);
+                            if (tape[head] === '0') action('0', 'R', 8);
+                            else if (tape[head] === 'B') action('1', 'R', 21);
                             break;
                         case 9:
-                            if(tape[head] === 'B') action('B', 'L', 9);
-                            else if(tape[head] === '0') action('B', 'R', 10);
-                            else if(tape[head] === '-') action('B', 'R', 17);
-                            else if(tape[head] === '+') action('B', 'R', 17);
+                            if (tape[head] === 'B') action('B', 'L', 9);
+                            else if (tape[head] === '0') action('B', 'R', 10);
+                            else if (tape[head] === '-') action('B', 'R', 17);
+                            else if (tape[head] === '+') action('B', 'R', 17);
                             break;
                         case 10:
-                            if(tape[head] === 'B') action('B', 'R', 10);
-                            else if(tape[head] === '+') action('-', 'R', 11);
-                            else if(tape[head] === '-') action('+', 'R', 11);
+                            if (tape[head] === 'B') action('B', 'R', 10);
+                            else if (tape[head] === '+') action('-', 'R', 11);
+                            else if (tape[head] === '-') action('+', 'R', 11);
                             break;
                         case 11:
-                            if(tape[head] === '0') action('0', 'R', 11);
-                            else if(tape[head] === 'B') action('B', 'L', 12);
+                            if (tape[head] === '0') action('0', 'R', 11);
+                            else if (tape[head] === 'B') action('B', 'L', 12);
                             break;
                         case 12:
-                            if(tape[head] === '0') action('B', 'L', 13);
-                            else if(tape[head] === '+') action('B', 'L', 14);
-                            else if(tape[head] === '-') action('B', 'L', 14);
+                            if (tape[head] === '0') action('B', 'L', 13);
+                            else if (tape[head] === '+') action('B', 'L', 14);
+                            else if (tape[head] === '-') action('B', 'L', 14);
                             break;
                         case 13:
-                            if(tape[head] === '0') action('0', 'L', 13);
-                            else if(tape[head] === '+') action('+', 'L', 13);
-                            else if(tape[head] === '-') action('-', 'L', 13);
-                            else if(tape[head] === 'B') action('B', 'L', 9);
+                            if (tape[head] === '0') action('0', 'L', 13);
+                            else if (tape[head] === '+') action('+', 'L', 13);
+                            else if (tape[head] === '-') action('-', 'L', 13);
+                            else if (tape[head] === 'B') action('B', 'L', 9);
                             break;
                         case 14:
-                            if(tape[head] === 'B') action('B', 'L', 14);
-                            else if(tape[head] === '+') action('+', 'R', 15);
-                            else if(tape[head] === '-') action('-', 'R', 15);
-                            else if(tape[head] === '0') action('0', 'R', 15);
+                            if (tape[head] === 'B') action('B', 'L', 14);
+                            else if (tape[head] === '+') action('+', 'R', 15);
+                            else if (tape[head] === '-') action('-', 'R', 15);
+                            else if (tape[head] === '0') action('0', 'R', 15);
                             break;
                         case 15:
-                            if(tape[head] === 'B') action('0', 'R', 16);
+                            if (tape[head] === 'B') action('0', 'R', 16);
                             break;
                         case 16:
-                            if(tape[head] === 'B') action('1', 'R', 21);
+                            if (tape[head] === 'B') action('1', 'R', 21);
                             break;
                         case 17:
-                            if(tape[head] === 'B') action('B', 'R', 17);
-                            else if(tape[head] === '-') action('+', 'R', 18);
-                            else if(tape[head] === '+') action('-', 'R', 18);
+                            if (tape[head] === 'B') action('B', 'R', 17);
+                            else if (tape[head] === '-') action('+', 'R', 18);
+                            else if (tape[head] === '+') action('-', 'R', 18);
                             break;
                         case 18:
-                            if(tape[head] === 'B') action('B', 'L', 19);
-                            else if(tape[head] === '0') action('0', 'R', 20);
+                            if (tape[head] === 'B') action('B', 'L', 19);
+                            else if (tape[head] === '0') action('0', 'R', 20);
                             break;
                         case 19:
-                            if(tape[head] === '-') action('1', 'R', 21);
-                            else if(tape[head] === '+') action('+', 'R', 21);
+                            if (tape[head] === '-') action('1', 'R', 21);
+                            else if (tape[head] === '+') action('+', 'R', 21);
                             break;
                         case 20:
-                            if(tape[head] === '0') action('0', 'R', 20);
-                            else if(tape[head] === 'B') action('1', 'R', 21);
+                            if (tape[head] === '0') action('0', 'R', 20);
+                            else if (tape[head] === 'B') action('1', 'R', 21);
                             break;
                     }
 
