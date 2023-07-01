@@ -311,6 +311,9 @@
     </div>
 
     <script>
+        //asep setate
+        var acceptingState = 21;
+
         //head index mulai dari 5 biar kirinya ada B
         var head = 15;
 
@@ -427,9 +430,6 @@
         }
 
         function init() {
-            //asep setate
-            acceptingState = 21;
-
             //head index mulai dari 5 biar kirinya ada B
             head = 15;
 
@@ -543,7 +543,7 @@
                             break;
                         case 8:
                             if (tape[head] === '0') action('0', 'R', 8);
-                            else if (tape[head] === 'B') action('1', 'R', 21);
+                            else if (tape[head] === 'B') action('1', 'R', acceptingState);
                             break;
                         case 9:
                             if (tape[head] === 'B') action('B', 'L', 9);
@@ -581,7 +581,7 @@
                             if (tape[head] === 'B') action('0', 'R', 16);
                             break;
                         case 16:
-                            if (tape[head] === 'B') action('1', 'R', 21);
+                            if (tape[head] === 'B') action('1', 'R', acceptingState);
                             break;
                         case 17:
                             if (tape[head] === 'B') action('B', 'R', 17);
@@ -593,12 +593,12 @@
                             else if (tape[head] === '0') action('0', 'R', 20);
                             break;
                         case 19:
-                            if (tape[head] === '-') action('1', 'R', 21);
-                            else if (tape[head] === '+') action('+', 'R', 21);
+                            if (tape[head] === '-') action('1', 'R', acceptingState);
+                            else if (tape[head] === '+') action('+', 'R', acceptingState);
                             break;
                         case 20:
                             if (tape[head] === '0') action('0', 'R', 20);
-                            else if (tape[head] === 'B') action('1', 'R', 21);
+                            else if (tape[head] === 'B') action('1', 'R', acceptingState);
                             break;
                     }
 

@@ -311,6 +311,9 @@
     </div>
 
     <script>
+        //asep setate
+        var acceptingState = 24;
+
         //head index mulai dari 5 biar kirinya ada B
         var head = 15;
 
@@ -427,9 +430,6 @@
         }
 
         function init() {
-            //asep setate
-            acceptingState = 23;
-
             //head index mulai dari 5 biar kirinya ada B
             head = 15;
 
@@ -559,7 +559,7 @@
                         case 14:
                             if (tape[head] === '0') action('X', 'R', 15);
                             else if (tape[head] === '1') action('1', 'L', 17);
-                            else if (tape[head] === 'B') action('1', 'L', 22);
+                            else if (tape[head] === 'B') action('1', 'L', 23);
                             break;
                         case 15:
                             if (tape[head] === '0') action('0', 'R', 15);
@@ -593,8 +593,8 @@
                             else if (tape[head] === '1') action('1', 'L', 21);
                             else if (tape[head] === 'B') action('B', 'R', 12);
                             break;
-                        case 22:
-                            if (tape[head] === '1') action('0', 'R', 23);
+                        case 23:
+                            if (tape[head] === '1') action('0', 'R', acceptingState);
                             break;
                     }
 
