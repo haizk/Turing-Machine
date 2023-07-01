@@ -3,6 +3,19 @@
 <head>
     <title>Turing Machine Simulator</title>
     <style>
+        /* CSS Animasi */
+        @keyframes moveBox {
+            0% {
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(200px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -34,6 +47,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            animation: moveBox 2s infinite;
         }
 
         #point {
