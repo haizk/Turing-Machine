@@ -198,6 +198,9 @@
         //step anim indikator
         var anim = 0;
 
+        //run indikator
+        var mlayu = false;
+
         //Enter bikin submit
         document.getElementById("input-string").addEventListener("keypress", function(event) {
             if(event.key === "Enter") {
@@ -215,7 +218,7 @@
                 document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
                 display();
                 document.getElementById("input-step").disabled = false;
-            }, 1050);
+            }, 1100);
         }
 
         function animateLeft() {
@@ -302,6 +305,9 @@
         
             //step anim indikator
             anim = 0;
+
+            //run indikator
+            mlayu = false;
         }
         
         function display() {
@@ -436,7 +442,7 @@
         }
 
         function run() {
-
+            mlayu = !mlayu;
         }
 
         function reset() {
@@ -446,6 +452,9 @@
             document.getElementById("input-step").disabled = true;
             document.getElementById("input-sim").disabled = false;
             document.getElementById("input-string").disabled = false;
+
+            //ora mlayu
+            mlayu = false;
 
             //apus yang sebelumnya misal ada
             for(let x=0; x<output.children.length; x++)
@@ -479,6 +488,12 @@
             //mendelik
             display();
         }
+
+        setInterval(() => {
+            if(mlayu && !(document.getElementById("input-step").disabled)) {
+                step();
+            }
+        }, 50);
     </script>
 </body>
 </html>
