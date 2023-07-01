@@ -12,14 +12,56 @@
         }
 
         #input-form {
-            padding-bottom: 100px;
+            padding: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 30px;
+            border: 1px solid black;
+            flex-basis: content;
+        }
+
+        #text-desc,
+        #input-container,
+        #btn-container {
+            padding: 10px;
+        }
+
+        #input-string {
+            width: 300px;
+        }
+
+        #status-container,
+        #stepCountOutput,
+        #tapeOutput,
+        #stateOutput,
+        #statusOutput {
+            padding: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border: 1px solid black;
+            flex-basis: content;
+            margin: 10px;
+        }
+
+        #tapeOutput {
+            max-width: 1000px;
+        }
+
+        #stepCountOutput,
+        #tapeOutput,
+        #stateOutput {
+            margin-bottom: 25px;
         }
 
         #output {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-bottom: 10px;
+            padding-bottom: 20px;
         }
 
         #output div {
@@ -144,14 +186,19 @@
 </head>
 
 <body>
-    <h1>Turing Machine Simulator</h1>
+    <h2>Multiplication</h2>
     <div id="input-form">
-        <label for="input-string">String:</label>
-        <input type="text" id="input-string">
-        <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
-        <button type="button" id="input-reset" onclick="reset()" disabled>Reset</button>
-        <button type="button" id="input-step" onclick="step()" disabled>Step</button>
-        <button type="button" id="input-run" onclick="run()" disabled>Run</button>
+        <div class="text-desc">String</div>
+        <div id="input-container">
+            <input type="text" id="input-string" placeholder="[+-] 0* [+-] 0* 1">
+        </div>
+        <div id="btn-container">
+            <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
+            <button type="button" id="input-reset" onclick="reset()" disabled>Reset</button>
+            <button type="button" id="input-step" onclick="step()" disabled>Step</button>
+            <button type="button" id="input-run" onclick="run()" disabled>Run</button>
+            <button type="button" id="input-fast" onclick="fast()" disabled>Fast</button>
+        </div>
     </div>
 
     <div id="output">
@@ -235,7 +282,24 @@
             </span></div>
     </div>
 
-    <div id="textOutput"></div>
+    <div id="status-container">
+        <div>
+            <div>Step</div>
+            <div id="stepCountOutput"></div>
+        </div>
+        <div>
+            <div>State</div>
+            <div id="stateOutput"></div>
+        </div>
+        <div>
+            <div>Tape</div>
+            <div id="tapeOutput"></div>
+        </div>
+        <div>
+            <div>Status</div>
+            <div id="statusOutput"></div>
+        </div>
+    </div>
 
     <script>
         //head index mulai dari 5 biar kirinya ada B
@@ -246,7 +310,13 @@
 
         //ambil div id output yang udah disiapin
         var output = document.getElementById("output");
-        var textOutput = document.getElementById("textOutput");
+        var stepCountOutput = document.getElementById("stepCountOutput");
+        var stateOutput = document.getElementById("stateOutput");
+        var tapeOutput = document.getElementById("tapeOutput");
+        var statusOutput = document.getElementById("statusOutput");
+
+        //interval animation
+        var animationInterval = 1100;
 
         //init tape array
         var tape = [];
@@ -283,7 +353,7 @@
                 document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
                 display();
                 document.getElementById("input-step").disabled = false;
-            }, 1100);
+            }, animationInterval);
         }
 
         function animateLeft() {
@@ -313,7 +383,7 @@
                 tempHead = head;
                 display();
                 document.getElementById("input-step").disabled = false;
-            }, 1100);
+            }, animationInterval);
         }
 
         function animateRight() {
@@ -326,6 +396,7 @@
             document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
             document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
             document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
+            if (typeof tape[tempHead + 13] == "undefined") tape[tempHead + 13] = 'B';
             document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead + 13];
             document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
             document.getElementsByClassName("point")[0].classList.toggle("animateRight");
@@ -343,7 +414,7 @@
                 tempHead = head;
                 display();
                 document.getElementById("input-step").disabled = false;
-            }, 1100);
+            }, animationInterval);
         }
 
         function init() {
@@ -383,6 +454,19 @@
 
                 //output ke masing-masing span
                 output.children[x].children[0].children[0].textContent = tape[y];
+            }
+
+            //ganti status asep or tidak
+            if (state === acceptingState || !obah) {
+                statusOutput.textContent = state === acceptingState;
+            }
+
+            stepCountOutput.textContent = stepCount;
+            stateOutput.textContent = "q" + state;
+            tapeOutput.textContent = "";
+            for(let x=0; x<tape.length; x++) {
+                if(tape[x] != 'B')
+                    tapeOutput.textContent += " " + tape[x] + " ";
             }
         }
 
@@ -491,8 +575,10 @@
                     }
 
                     //mandek
-                    if (!obah)
+                    if (!obah && !(state === acceptingState)) {
                         document.getElementById("input-step").disabled = true;
+                        statusOutput.textContent = false;
+                    }
                 }
             } else {
                 anim = 0;
@@ -505,17 +591,30 @@
             document.getElementById("input-run").style.background = (mlayu ? "green" : "red");
         }
 
+        function fast() {
+            animationInterval = (animationInterval === 1100 ? 50 : 1100);
+            document.getElementById("input-fast").style.background = (animationInterval === 1100 ? "red" : "green");
+        }
+
         function reset() {
             //disable button
+            document.getElementById("input-fast").disabled = true;
             document.getElementById("input-run").disabled = true;
             document.getElementById("input-reset").disabled = true;
             document.getElementById("input-step").disabled = true;
             document.getElementById("input-sim").disabled = false;
             document.getElementById("input-string").disabled = false;
 
+            //reset status
+            stepCountOutput.textContent = "";
+            stateOutput.textContent = "";
+            tapeOutput.textContent = "";
+            statusOutput.textContent = "";
+
             //ora mlayu
             mlayu = false;
             document.getElementById("input-run").style.background = "";
+            document.getElementById("input-fast").style.background = "";
 
             //apus yang sebelumnya misal ada
             for (let x = 0; x < output.children.length; x++)
@@ -529,6 +628,7 @@
             document.getElementById("input-step").disabled = false;
             document.getElementById("input-reset").disabled = false;
             document.getElementById("input-run").disabled = false;
+            document.getElementById("input-fast").disabled = false;
 
             //init
             init();
