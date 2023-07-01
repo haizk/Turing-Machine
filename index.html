@@ -1,9 +1,295 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Turing Machine</title>
-    </head>
-    <body>
-        Hello World!
-    </body>
+<head>
+    <title>Turing Machine Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+        }
+
+        #input-form {
+            padding-bottom: 100px;
+        }
+
+        #output {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 100px;
+        }
+
+        #output div {
+            padding: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        #output span {
+            outline: black solid 4px;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #point {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <h1>Turing Machine Simulator</h1>
+    <div id="input-form">
+        <label for="input-string">String:</label>
+        <input type="text" id="input-string">
+        <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
+        <button type="button" id="input-reset" onclick="reset()" disabled>Reset</button>
+        <button type="button" id="input-step" onclick="step()" disabled>Step</button>
+    </div>
+
+    <div id="output">
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div id="point"><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+        <div><span>H</span></div>
+    </div>
+
+    <div id="textOutput"></div>
+
+    <script>
+        //Enter bikin submit
+        document.getElementById("input-string").addEventListener("keypress", function(event) {
+            if(event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("input-sim").click();
+            }
+        });
+
+        //head index mulai dari 5 biar kirinya ada B
+        var head = 13;
+
+        //ambil div id output yang udah disiapin
+        var output = document.getElementById("output");
+        var textOutput = document.getElementById("textOutput");
+
+        //init tape array
+        var tape = [];
+        //Array((document.getElementById("input-string").value.length) + 30).fill('B');
+
+        //steps count
+        var stepCount = 0;
+
+        //state
+        var state = 1;
+
+        //obah indikator
+        var obah = true;
+
+        function init() {
+            //head index mulai dari 5 biar kirinya ada B
+            head = 12;
+
+            //init tape array
+            tape = [];
+
+            //steps count
+            stepCount = 0;
+
+            //state
+            state = 1;
+
+            //obah indikator
+            obah = true;
+        }
+        
+        function display() {
+            for(let x=0, y=head-12; x<25; x++, y++) {
+                //add B to new index
+                if(typeof tape[y] == "undefined")
+                    tape[y] = 'B'
+                
+                //output ke masing-masing span
+                output.children[x].children[0].textContent = tape[y];
+            }
+
+            //debug
+            if(state === 18 || !obah)
+                textOutput.textContent = (state === 18 ? "terimo nggeh" : "mboten");
+            else
+                textOutput.textContent = tape + "\nstate: " + state + "\nhead: " + head + "\nheadChar: " + tape[head];
+        }
+
+        function action(replaceWith, move, newState) {
+            state = newState;
+            tape[(move === 'L' ? head-- : head++)] = replaceWith;
+            obah = (state === 18 ? false : true);
+        }
+
+        function step() {
+            //mandek
+            if (state === 18)
+                document.getElementById("input-step").disabled = true;
+            else {
+                //mlaku siji
+                stepCount += 1;
+
+                //detek ora obah
+                obah = false;
+
+                switch(state) {
+                    case 1:
+                        if(tape[head] === '+') action('B', 'R', 2);
+                        else if(tape[head] === '-') action('B', 'R', 3);
+                        break;
+                    case 2:
+                        if(tape[head] === '0') action('0', 'R', 2);
+                        else if(tape[head] === '+') action('1', 'R', 4);
+                        else if(tape[head] === '-') action('1', 'R', 5);
+                        break;
+                    case 3:
+                        if(tape[head] === '0') action('0', 'R', 2);
+                        else if(tape[head] === '+') action('1', 'R', 5);
+                        else if(tape[head] === '-') action('1', 'R', 4);
+                        break;
+                    case 4:
+                        if(tape[head] === '1') action('1', 'R', 4);
+                        else if(tape[head] === '0') action('0', 'R', 4);
+                        else if(tape[head] === 'B') action('+', 'L', 6);
+                        break;
+                    case 5:
+                        if(tape[head] === '1') action('1', 'R', 5);
+                        else if(tape[head] === '0') action('0', 'R', 5);
+                        else if(tape[head] === 'B') action('-', 'L', 6);
+                        break;
+                    case 6:
+                        if(tape[head] === '1') action('1', 'L', 6);
+                        else if(tape[head] === '0') action('0', 'L', 6);
+                        else if(tape[head] === 'B') action('B', 'R', 7);
+                        break;
+                    case 7:
+                        if(tape[head] === '1') action('B', 'R', 16);
+                        else if(tape[head] === '0') action('B', 'R', 8);
+                        break;
+                    case 8:
+                        if(tape[head] === '0') action('0', 'R', 8);
+                        else if(tape[head] === '1') action('1', 'R', 9);
+                        break;
+                    case 9:
+                        if(tape[head] === '0') action('X', 'R', 10);
+                        else if(tape[head] === '1') action('1', 'L', 14);
+                        break;
+                    case 10:
+                        if(tape[head] === '0') action('0', 'R', 10);
+                        else if(tape[head] === '1') action('1', 'R', 11);
+                        break;
+                    case 11:
+                        if(tape[head] === '0') action('0', 'R', 11);
+                        else if(tape[head] === '+') action('+', 'R', 11);
+                        else if(tape[head] === '-') action('-', 'R', 11);
+                        else if(tape[head] === 'B') action('0', 'L', 12);
+                        break;
+                    case 12:
+                        if(tape[head] === '0') action('0', 'L', 12);
+                        else if(tape[head] === '+') action('+', 'L', 12);
+                        else if(tape[head] === '-') action('-', 'L', 12);
+                        else if(tape[head] === '1') action('1', 'L', 13);
+                        break;
+                    case 13:
+                        if(tape[head] === '0') action('0', 'L', 13);
+                        else if(tape[head] === 'X') action('X', 'R', 9);
+                        break;
+                    case 14:
+                        if(tape[head] === 'X') action('0', 'L', 14);
+                        else if(tape[head] === '1') action('1', 'L', 15);
+                        break;
+                    case 15:
+                        if(tape[head] === '0') action('0', 'L', 15);
+                        else if(tape[head] === 'B') action('B', 'R', 7);
+                        break;
+                    case 16:
+                        if(tape[head] === '0') action('B', 'R', 16);
+                        else if(tape[head] === '1') action('B', 'R', 17);
+                        break;
+                    case 17:
+                        if(tape[head] === '0') action('0', 'R', 17);
+                        else if(tape[head] === '+') action('+', 'R', 17);
+                        else if(tape[head] === '-') action('-', 'R', 17);
+                        else if(tape[head] === 'B') action('1', 'R', 18);
+                        break;
+                }
+
+                //mendelik
+                display();
+
+                //mandek
+                if (!obah)
+                    document.getElementById("input-step").disabled = true;
+            }
+        }
+
+        function reset() {
+            //disable button
+            document.getElementById("input-reset").disabled = true;
+            document.getElementById("input-step").disabled = true;
+            document.getElementById("input-sim").disabled = false;
+            document.getElementById("input-string").disabled = false;
+
+            //apus yang sebelumnya misal ada
+            for(let x=0; x<output.children.length; x++)
+               output.children[x].children[0].textContent = "";       
+        }
+
+        function simulate() {
+            //disable button
+            document.getElementById("input-string").disabled = true;
+            document.getElementById("input-sim").disabled = true;
+            document.getElementById("input-step").disabled = false;
+            document.getElementById("input-reset").disabled = false;
+            
+            //init
+            init();
+            
+            //taruh input ke tape
+            for(let x=0 ;; x++) {
+                if(x<12)
+                    tape[x] = 'B';
+                else {
+                    for(let y=0; y<document.getElementById("input-string").value.length; y++, x++)
+                        tape[x] = (document.getElementById("input-string").value)[y];
+                    for(let y=0; y<13; y++, x++)
+                        tape[x] = 'B';
+                    break;
+                }
+            }
+
+            //mendelik
+            display();
+        }
+    </script>
+</body>
 </html>
