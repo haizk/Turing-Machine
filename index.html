@@ -443,6 +443,7 @@
 
         function run() {
             mlayu = !mlayu;
+            document.getElementById("input-run").style.background = (mlayu ? "green" : "red");
         }
 
         function reset() {
@@ -455,6 +456,7 @@
 
             //ora mlayu
             mlayu = false;
+            document.getElementById("input-run").style.background = "";
 
             //apus yang sebelumnya misal ada
             for(let x=0; x<output.children.length; x++)
@@ -489,10 +491,9 @@
             display();
         }
 
+        //mlayu detektor
         setInterval(() => {
-            if(mlayu && !(document.getElementById("input-step").disabled)) {
-                step();
-            }
+            if(mlayu && !(document.getElementById("input-step").disabled)) step();
         }, 50);
     </script>
 </body>
