@@ -3,19 +3,6 @@
 <head>
     <title>Turing Machine Simulator</title>
     <style>
-        /* CSS Animasi */
-        @keyframes moveBox {
-            0% {
-                transform: translateX(0);
-            }
-            50% {
-                transform: translateX(200px);
-            }
-            100% {
-                transform: translateX(0);
-            }
-        }
-
         body {
             font-family: Arial, sans-serif;
             margin: 20px;
@@ -30,7 +17,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-bottom: 100px;
+            padding-bottom: 10px;
         }
 
         #output div {
@@ -47,7 +34,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            animation: moveBox 2s infinite;
         }
 
         #point {
@@ -57,6 +43,69 @@
         #point span {
             height: 60px;
             width: 60px;
+        }
+
+        .animateLeft, .animateRight, .animatePop {
+            transition: 1s;
+            transition-timing-function: cubic-bezier(.60,0,.40,1);
+        }
+
+        .beforePoint.animateLeft, .point.animateLeft {
+            transform: translateX(59px);
+        }
+
+        .afterEdge.animateLeft {
+            transform: translateX(54px);
+            opacity: 0;
+        }
+
+        .before.animateLeft, .after.animateLeft, .afterPoint.animateLeft, .beforeEdge.animateLeft {
+            transform: translateX(54px);
+        }
+
+        .point.animateRight, .afterPoint.animateRight {
+            transform: translateX(-59px);
+        }
+
+        .beforeEdge.animateRight {
+            transform: translateX(-54px);
+            opacity: 0;
+        }
+
+        .before.animateRight, .after.animateRight, .beforePoint.animateRight, .afterEdge.animateRight {
+            transform: translateX(-54px);
+        }
+
+        .point.animatePop {
+            transform: translateY(-59px);
+            opacity: 0;
+        }
+
+        .popUp, .beforeFade, .afterFade {
+            opacity: 0;
+        }
+
+        .beforeFade {
+            transform: translateX(-54px);
+        }
+
+        .beforeFade.animateLeft {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .afterFade {
+            transform: translateX(54px);
+        }
+
+        .afterFade.animateRight {
+            
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .popUp.animatePop { 
+            opacity: 1;
         }
     </style>
 </head>
@@ -68,49 +117,44 @@
         <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
         <button type="button" id="input-reset" onclick="reset()" disabled>Reset</button>
         <button type="button" id="input-step" onclick="step()" disabled>Step</button>
+        <button type="button" onclick="animateLeft()">Left</button>
+        <button type="button" onclick="animateRight()">Right</button>
+        <button type="button" onclick="animatePop()">Pop</button>
     </div>
 
     <div id="output">
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div id="point"><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
-        <div><span>H</span></div>
+        <div><span><p class="beforeEdge"></p><p style="position: absolute;" class="beforeFade">B</p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="before"></p></span></div>
+        <div><span><p class="beforePoint"></p></span></div>
+        <div id="point"><span><p class="point"></p><p style="position: absolute;" class="popUp">B</p></span></div>
+        <div><span><p class="afterPoint"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="after"></p></span></div>
+        <div><span><p class="afterEdge"></p><p style="position: absolute;" class="afterFade">B</p></span></div>
     </div>
 
     <div id="textOutput"></div>
 
     <script>
-        //Enter bikin submit
-        document.getElementById("input-string").addEventListener("keypress", function(event) {
-            if(event.key === "Enter") {
-                event.preventDefault();
-                document.getElementById("input-sim").click();
-            }
-        });
-
         //head index mulai dari 5 biar kirinya ada B
-        var head = 12;
+        var head = 15;
 
         //buat anim
         var tempHead = head;
@@ -135,9 +179,83 @@
         //step anim indikator
         var anim = 0;
 
+        //Enter bikin submit
+        document.getElementById("input-string").addEventListener("keypress", function(event) {
+            if(event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("input-sim").click();
+            }
+        });
+
+        function animatePop() {
+            document.getElementsByClassName("point")[0].classList.toggle("animatePop");
+            document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+            setTimeout(() => {
+                document.getElementsByClassName("point")[0].classList.toggle("animatePop");
+                document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+                display();
+            }, 1050);
+        }
+
+        function animateLeft() {
+            for(let x=0; x<document.getElementsByClassName("before").length; x++)
+                document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
+            for(let x=0; x<document.getElementsByClassName("after").length; x++)
+                document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforeFade")[0].textContent = tape[tempHead-13];
+            document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
+            setTimeout(() => {
+                for(let x=0; x<document.getElementsByClassName("before").length; x++)
+                    document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
+                for(let x=0; x<document.getElementsByClassName("after").length; x++)
+                    document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
+                tempHead = head;
+                display();
+            }, 1100);
+        }
+
+        function animateRight() {
+            for(let x=0; x<document.getElementsByClassName("before").length; x++)
+                document.getElementsByClassName("before")[x].classList.toggle("animateRight");
+            for(let x=0; x<document.getElementsByClassName("after").length; x++)
+                document.getElementsByClassName("after")[x].classList.toggle("animateRight");
+            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead+13];
+            document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("point")[0].classList.toggle("animateRight");
+            setTimeout(() => {
+                for(let x=0; x<document.getElementsByClassName("before").length; x++)
+                    document.getElementsByClassName("before")[x].classList.toggle("animateRight");
+                for(let x=0; x<document.getElementsByClassName("after").length; x++)
+                    document.getElementsByClassName("after")[x].classList.toggle("animateRight");
+                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("point")[0].classList.toggle("animateRight");
+                tempHead = head;
+                display();
+            }, 1100);
+        }
+
         function init() {
             //head index mulai dari 5 biar kirinya ada B
-            head = 12;
+            head = 15;
 
             //buat anim
             tempHead = head;
@@ -165,7 +283,7 @@
                     tape[y] = 'B'
                 
                 //output ke masing-masing span
-                output.children[x].children[0].textContent = tape[y];
+                output.children[x].children[0].children[0].textContent = tape[y];
             }
 
             //debug
@@ -181,6 +299,8 @@
             tape[(move === 'L' ? head-- : head++)] = replaceWith;
             obah = (state === 18 ? false : true);
             anim = 1;
+            document.getElementsByClassName("popUp")[0].textContent = replaceWith;
+            animatePop();
         }
 
         function step(event) {
@@ -277,17 +397,13 @@
                             break;
                     }
 
-                    //mendelik
-                    display();
-
                     //mandek
                     if (!obah)
                         document.getElementById("input-step").disabled = true;
                 }
             } else {
                 anim = 0;
-                tempHead = head;
-                display();
+                (tempHead > head ? animateLeft() : animateRight());
             }
         }
 
@@ -300,7 +416,7 @@
 
             //apus yang sebelumnya misal ada
             for(let x=0; x<output.children.length; x++)
-               output.children[x].children[0].textContent = "";       
+               output.children[x].children[0].children[0].textContent = "";       
         }
 
         function simulate() {
@@ -315,12 +431,12 @@
             
             //taruh input ke tape
             for(let x=0 ;; x++) {
-                if(x<12)
+                if(x<head)
                     tape[x] = 'B';
                 else {
                     for(let y=0; y<document.getElementById("input-string").value.length; y++, x++)
                         tape[x] = (document.getElementById("input-string").value)[y];
-                    for(let y=0; y<13; y++, x++)
+                    for(let y=0; y<head; y++, x++)
                         tape[x] = 'B';
                     break;
                 }
