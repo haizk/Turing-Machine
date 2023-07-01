@@ -458,7 +458,7 @@
 
             //ganti status asep or tidak
             if (state === acceptingState || !obah) {
-                statusOutput.textContent = state === acceptingState;
+                statusOutput.textContent = (state === acceptingState ? "Accepted" : "Rejected");
             }
 
             stepCountOutput.textContent = stepCount;
@@ -577,7 +577,7 @@
                     //mandek
                     if (!obah && !(state === acceptingState)) {
                         document.getElementById("input-step").disabled = true;
-                        statusOutput.textContent = false;
+                        statusOutput.textContent = "Rejected";
                     }
                 }
             } else {
