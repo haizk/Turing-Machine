@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Turing Machine Simulator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            text-align: center;
+            font-size: medium;
+        }
+
+        #input-form {
+            padding: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 30px;
+            border: 1px solid black;
+            flex-basis: content;
+        }
+
+        #text-desc,
+        #input-container,
+        #btn-container {
+            padding: 10px;
+        }
+
+        #input-string {
+            width: 300px;
+        }
+
+        #status-container,
+        #stepCountOutput,
+        #tapeOutput,
+        #stateOutput,
+        #statusOutput {
+            padding: 10px;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border: 1px solid black;
+            flex-basis: content;
+            margin: 10px;
+        }
+
+        #tapeOutput {
+            max-width: 1000px;
+        }
+
+        #stepCountOutput,
+        #tapeOutput,
+        #stateOutput {
+            margin-bottom: 25px;
+        }
+
+        #output {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-bottom: 20px;
+        }
+
+        #output div {
+            padding: 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #output span {
+            outline: black solid 4px;
+            height: 50px;
+            width: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #point {
+            background-color: yellow;
+        }
+
+        #point span {
+            height: 60px;
+            width: 60px;
+        }
+
+        .animateLeft,
+        .animateRight,
+        .animatePop {
+            transition: 1s;
+            transition-timing-function: cubic-bezier(.60, 0, .40, 1);
+        }
+
+        .beforePoint.animateLeft,
+        .point.animateLeft {
+            transform: translateX(59px);
+        }
+
+        .beforePoint.animateLeft {
+            font-size: xx-large;
+        }
+
+        .afterEdge.animateLeft {
+            transform: translateX(54px);
+            opacity: 0;
+        }
+
+        .before.animateLeft,
+        .after.animateLeft,
+        .afterPoint.animateLeft,
+        .beforeEdge.animateLeft {
+            transform: translateX(54px);
+        }
+
+        .point.animateRight,
+        .afterPoint.animateRight {
+            transform: translateX(-59px);
+        }
+
+        .point.animateRight,
+        .point.animateLeft,
+        .point.animatePop {
+            font-size: medium;
+        }
+
+        .beforeEdge.animateRight {
+            transform: translateX(-54px);
+            opacity: 0;
+        }
+
+        .afterPoint.animateRight {
+            font-size: xx-large;
+        }
+
+        .before.animateRight,
+        .after.animateRight,
+        .beforePoint.animateRight,
+        .afterEdge.animateRight {
+            transform: translateX(-54px);
+        }
+
+        .point {
+            font-size: xx-large;
+        }
+
+        .point.animatePop {
+            transform: translateY(-59px);
+            opacity: 0;
+        }
+
+        .popUp,
+        .beforeFade,
+        .afterFade {
+            opacity: 0;
+        }
+
+        .beforeFade {
+            transform: translateX(-54px);
+        }
+
+        .beforeFade.animateLeft {
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .afterFade {
+            transform: translateX(54px);
+        }
+
+        .afterFade.animateRight {
+
+            transform: translateX(0);
+            opacity: 1;
+        }
+
+        .popUp.animatePop {
+            opacity: 1;
+            font-size: xx-large;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Multiplication</h2>
+    <div id="input-form">
+        <div class="text-desc">String</div>
+        <div id="input-container">
+            <input type="text" id="input-string" placeholder="[+-] 0* [+-] 0* 1">
+        </div>
+        <div id="btn-container">
+            <button type="button" id="input-sim" onclick="simulate()">Simulate</button>
+            <button type="button" id="input-reset" onclick="reset()" disabled>Reset</button>
+            <button type="button" id="input-step" onclick="step()" disabled>Step</button>
+            <button type="button" id="input-run" onclick="run()" disabled>Run</button>
+            <button type="button" id="input-fast" onclick="fast()" disabled>Fast</button>
+        </div>
+    </div>
+
+    <div id="output">
+        <div><span>
+                <p class="beforeEdge"></p>
+                <p style="position: absolute;" class="beforeFade">B</p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="beforePoint"></p>
+            </span></div>
+        <div id="point"><span>
+                <p class="point"></p>
+                <p style="position: absolute;" class="popUp">B</p>
+            </span></div>
+        <div><span>
+                <p class="afterPoint"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="afterEdge"></p>
+                <p style="position: absolute;" class="afterFade">B</p>
+            </span></div>
+    </div>
+
+    <div id="status-container">
+        <div>
+            <div>Step</div>
+            <div id="stepCountOutput"></div>
+        </div>
+        <div>
+            <div>State</div>
+            <div id="stateOutput"></div>
+        </div>
+        <div>
+            <div>Tape</div>
+            <div id="tapeOutput"></div>
+        </div>
+        <div>
+            <div>Status</div>
+            <div id="statusOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        //head index mulai dari 5 biar kirinya ada B
+        var head = 15;
+
+        //buat anim
+        var tempHead = head;
+
+        //ambil div id output yang udah disiapin
+        var output = document.getElementById("output");
+        var stepCountOutput = document.getElementById("stepCountOutput");
+        var stateOutput = document.getElementById("stateOutput");
+        var tapeOutput = document.getElementById("tapeOutput");
+        var statusOutput = document.getElementById("statusOutput");
+
+        //interval animation
+        var animationInterval = 1100;
+
+        //init tape array
+        var tape = [];
+
+        //steps count
+        var stepCount = 0;
+
+        //state
+        var state = 1;
+
+        //obah indikator
+        var obah = true;
+
+        //step anim indikator
+        var anim = 0;
+
+        //run indikator
+        var mlayu = false;
+
+        //Enter bikin submit
+        document.getElementById("input-string").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("input-sim").click();
+            }
+        });
+
+        function animatePop() {
+            document.getElementById("input-step").disabled = true;
+            document.getElementsByClassName("point")[0].classList.toggle("animatePop");
+            document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+            setTimeout(() => {
+                document.getElementsByClassName("point")[0].classList.toggle("animatePop");
+                document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+                display();
+                document.getElementById("input-step").disabled = false;
+            }, animationInterval);
+        }
+
+        function animateLeft() {
+            document.getElementById("input-step").disabled = true;
+            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
+            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforeFade")[0].textContent = tape[tempHead - 13];
+            document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
+            setTimeout(() => {
+                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                    document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
+                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                    document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
+                tempHead = head;
+                display();
+                document.getElementById("input-step").disabled = false;
+            }, animationInterval);
+        }
+
+        function animateRight() {
+            document.getElementById("input-step").disabled = true;
+            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                document.getElementsByClassName("before")[x].classList.toggle("animateRight");
+            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                document.getElementsByClassName("after")[x].classList.toggle("animateRight");
+            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
+            if (typeof tape[tempHead + 13] == "undefined") tape[tempHead + 13] = 'B';
+            document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead + 13];
+            document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("point")[0].classList.toggle("animateRight");
+            setTimeout(() => {
+                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                    document.getElementsByClassName("before")[x].classList.toggle("animateRight");
+                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                    document.getElementsByClassName("after")[x].classList.toggle("animateRight");
+                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("point")[0].classList.toggle("animateRight");
+                tempHead = head;
+                display();
+                document.getElementById("input-step").disabled = false;
+            }, animationInterval);
+        }
+
+        function init() {
+            //asep setate
+            acceptingState = 18;
+
+            //head index mulai dari 5 biar kirinya ada B
+            head = 15;
+
+            //buat anim
+            tempHead = head;
+
+            //init tape array
+            tape = [];
+
+            //steps count
+            stepCount = 0;
+
+            //state
+            state = 1;
+
+            //obah indikator
+            obah = true;
+
+            //step anim indikator
+            anim = 0;
+
+            //run indikator
+            mlayu = false;
+
+            //fast
+            animationInterval = 1100;
+        }
+
+        function display() {
+            for (let x = 0, y = tempHead - 12; x < 25; x++, y++) {
+                //add B to new index
+                if (typeof tape[y] == "undefined")
+                    tape[y] = 'B'
+
+                //output ke masing-masing span
+                output.children[x].children[0].children[0].textContent = tape[y];
+            }
+
+            //ganti status asep or tidak
+            if (state === acceptingState || !obah) {
+                statusOutput.textContent = (state === acceptingState ? "Accepted" : "Rejected");
+            }
+
+            stepCountOutput.textContent = stepCount;
+            stateOutput.textContent = "q" + state;
+            tapeOutput.textContent = "";
+            for (let x = 0; x < tape.length; x++) {
+                if (tape[x] != 'B')
+                    tapeOutput.textContent += " " + tape[x] + " ";
+            }
+        }
+
+        function action(replaceWith, move, newState) {
+            state = newState;
+            tempHead = head;
+            tape[(move === 'L' ? head-- : head++)] = replaceWith;
+            obah = (state === acceptingState ? false : true);
+            anim = 1;
+            document.getElementsByClassName("popUp")[0].textContent = replaceWith;
+            animatePop();
+        }
+
+        function step(event) {
+            if (anim === 0) {
+                //mandek
+                if (state === acceptingState)
+                    document.getElementById("input-step").disabled = true;
+                else {
+                    //mlaku siji
+                    stepCount += 1;
+
+                    //detek ora obah
+                    obah = false;
+
+                    switch (state) {
+                        case 1:
+                            if (tape[head] === '+') action('B', 'R', 2);
+                            else if (tape[head] === '-') action('B', 'R', 3);
+                            break;
+                        case 2:
+                            if (tape[head] === '0') action('0', 'R', 2);
+                            else if (tape[head] === '+') action('1', 'R', 4);
+                            else if (tape[head] === '-') action('1', 'R', 5);
+                            break;
+                        case 3:
+                            if (tape[head] === '0') action('0', 'R', 3);
+                            else if (tape[head] === '+') action('1', 'R', 5);
+                            else if (tape[head] === '-') action('1', 'R', 4);
+                            break;
+                        case 4:
+                            if (tape[head] === '1') action('1', 'R', 4);
+                            else if (tape[head] === '0') action('0', 'R', 4);
+                            else if (tape[head] === 'B') action('+', 'L', 6);
+                            break;
+                        case 5:
+                            if (tape[head] === '1') action('1', 'R', 5);
+                            else if (tape[head] === '0') action('0', 'R', 5);
+                            else if (tape[head] === 'B') action('-', 'L', 6);
+                            break;
+                        case 6:
+                            if (tape[head] === '1') action('1', 'L', 6);
+                            else if (tape[head] === '0') action('0', 'L', 6);
+                            else if (tape[head] === 'B') action('B', 'R', 7);
+                            break;
+                        case 7:
+                            if (tape[head] === '1') action('B', 'R', 16);
+                            else if (tape[head] === '0') action('B', 'R', 8);
+                            break;
+                        case 8:
+                            if (tape[head] === '0') action('0', 'R', 8);
+                            else if (tape[head] === '1') action('1', 'R', 9);
+                            break;
+                        case 9:
+                            if (tape[head] === '0') action('X', 'R', 10);
+                            else if (tape[head] === '1') action('1', 'L', 14);
+                            break;
+                        case 10:
+                            if (tape[head] === '0') action('0', 'R', 10);
+                            else if (tape[head] === '1') action('1', 'R', 11);
+                            break;
+                        case 11:
+                            if (tape[head] === '0') action('0', 'R', 11);
+                            else if (tape[head] === '+') action('+', 'R', 11);
+                            else if (tape[head] === '-') action('-', 'R', 11);
+                            else if (tape[head] === 'B') action('0', 'L', 12);
+                            break;
+                        case 12:
+                            if (tape[head] === '0') action('0', 'L', 12);
+                            else if (tape[head] === '+') action('+', 'L', 12);
+                            else if (tape[head] === '-') action('-', 'L', 12);
+                            else if (tape[head] === '1') action('1', 'L', 13);
+                            break;
+                        case 13:
+                            if (tape[head] === '0') action('0', 'L', 13);
+                            else if (tape[head] === 'X') action('X', 'R', 9);
+                            break;
+                        case 14:
+                            if (tape[head] === 'X') action('0', 'L', 14);
+                            else if (tape[head] === '1') action('1', 'L', 15);
+                            break;
+                        case 15:
+                            if (tape[head] === '0') action('0', 'L', 15);
+                            else if (tape[head] === 'B') action('B', 'R', 7);
+                            break;
+                        case 16:
+                            if (tape[head] === '0') action('B', 'R', 16);
+                            else if (tape[head] === '1') action('B', 'R', 17);
+                            break;
+                        case 17:
+                            if (tape[head] === '0') action('0', 'R', 17);
+                            else if (tape[head] === '+') action('+', 'R', 17);
+                            else if (tape[head] === '-') action('-', 'R', 17);
+                            else if (tape[head] === 'B') action('1', 'R', acceptingState);
+                            break;
+                    }
+
+                    //mandek
+                    if (!obah && !(state === acceptingState)) {
+                        document.getElementById("input-step").disabled = true;
+                        statusOutput.textContent = "Rejected";
+                    }
+                }
+            } else {
+                anim = 0;
+                (tempHead > head ? animateLeft() : animateRight());
+            }
+        }
+
+        function run() {
+            mlayu = !mlayu;
+            document.getElementById("input-run").style.background = (mlayu ? "green" : "red");
+        }
+
+        function fast() {
+            animationInterval = (animationInterval === 1100 ? 50 : 1100);
+            document.getElementById("input-fast").style.background = (animationInterval === 1100 ? "red" : "green");
+        }
+
+        function reset() {
+            //disable button
+            document.getElementById("input-fast").disabled = true;
+            document.getElementById("input-run").disabled = true;
+            document.getElementById("input-reset").disabled = true;
+            document.getElementById("input-step").disabled = true;
+            document.getElementById("input-sim").disabled = false;
+            document.getElementById("input-string").disabled = false;
+
+            //reset status
+            stepCountOutput.textContent = "";
+            stateOutput.textContent = "";
+            tapeOutput.textContent = "";
+            statusOutput.textContent = "";
+
+            //ora mlayu
+            mlayu = false;
+            document.getElementById("input-run").style.background = "";
+
+            //fast
+            animationInterval = 1100;
+            document.getElementById("input-fast").style.background = "";
+
+            //apus yang sebelumnya misal ada
+            for (let x = 0; x < output.children.length; x++)
+                output.children[x].children[0].children[0].textContent = "";
+        }
+
+        function simulate() {
+            //disable button
+            document.getElementById("input-string").disabled = true;
+            document.getElementById("input-sim").disabled = true;
+            document.getElementById("input-step").disabled = false;
+            document.getElementById("input-reset").disabled = false;
+            document.getElementById("input-run").disabled = false;
+            document.getElementById("input-fast").disabled = false;
+
+            //init
+            init();
+
+            //taruh input ke tape
+            for (let x = 0;; x++) {
+                if (x < head)
+                    tape[x] = 'B';
+                else {
+                    for (let y = 0; y < document.getElementById("input-string").value.length; y++, x++)
+                        tape[x] = (document.getElementById("input-string").value)[y];
+                    for (let y = 0; y < head; y++, x++)
+                        tape[x] = 'B';
+                    break;
+                }
+            }
+
+            //mendelik
+            display();
+        }
+
+        //mlayu detektor
+        setInterval(() => {
+            if (mlayu && !(document.getElementById("input-step").disabled)) step();
+        }, 50);
+    </script>
+</body>
+
+</html>
