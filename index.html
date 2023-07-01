@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Turing Machine Simulator</title>
     <style>
@@ -27,7 +28,7 @@
             justify-content: center;
             align-items: center;
         }
-        
+
         #output span {
             outline: black solid 4px;
             height: 50px;
@@ -46,12 +47,15 @@
             width: 60px;
         }
 
-        .animateLeft, .animateRight, .animatePop {
+        .animateLeft,
+        .animateRight,
+        .animatePop {
             transition: 1s;
-            transition-timing-function: cubic-bezier(.60,0,.40,1);
+            transition-timing-function: cubic-bezier(.60, 0, .40, 1);
         }
 
-        .beforePoint.animateLeft, .point.animateLeft {
+        .beforePoint.animateLeft,
+        .point.animateLeft {
             transform: translateX(59px);
         }
 
@@ -64,15 +68,21 @@
             opacity: 0;
         }
 
-        .before.animateLeft, .after.animateLeft, .afterPoint.animateLeft, .beforeEdge.animateLeft {
+        .before.animateLeft,
+        .after.animateLeft,
+        .afterPoint.animateLeft,
+        .beforeEdge.animateLeft {
             transform: translateX(54px);
         }
 
-        .point.animateRight, .afterPoint.animateRight {
+        .point.animateRight,
+        .afterPoint.animateRight {
             transform: translateX(-59px);
         }
 
-        .point.animateRight, .point.animateLeft, .point.animatePop {
+        .point.animateRight,
+        .point.animateLeft,
+        .point.animatePop {
             font-size: medium;
         }
 
@@ -85,7 +95,10 @@
             font-size: xx-large;
         }
 
-        .before.animateRight, .after.animateRight, .beforePoint.animateRight, .afterEdge.animateRight {
+        .before.animateRight,
+        .after.animateRight,
+        .beforePoint.animateRight,
+        .afterEdge.animateRight {
             transform: translateX(-54px);
         }
 
@@ -98,7 +111,9 @@
             opacity: 0;
         }
 
-        .popUp, .beforeFade, .afterFade {
+        .popUp,
+        .beforeFade,
+        .afterFade {
             opacity: 0;
         }
 
@@ -116,17 +131,18 @@
         }
 
         .afterFade.animateRight {
-            
+
             transform: translateX(0);
             opacity: 1;
         }
 
-        .popUp.animatePop { 
+        .popUp.animatePop {
             opacity: 1;
             font-size: xx-large;
         }
     </style>
 </head>
+
 <body>
     <h1>Turing Machine Simulator</h1>
     <div id="input-form">
@@ -136,37 +152,87 @@
         <button type="button" id="input-reset" onclick="reset()" disabled>Reset</button>
         <button type="button" id="input-step" onclick="step()" disabled>Step</button>
         <button type="button" id="input-run" onclick="run()" disabled>Run</button>
-        <button type="button" onclick="animateLeft()">Left</button>
-        <button type="button" onclick="animateRight()">Right</button>
-        <button type="button" onclick="animatePop()">Pop</button>
     </div>
 
     <div id="output">
-        <div><span><p class="beforeEdge"></p><p style="position: absolute;" class="beforeFade">B</p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="before"></p></span></div>
-        <div><span><p class="beforePoint"></p></span></div>
-        <div id="point"><span><p class="point"></p><p style="position: absolute;" class="popUp">B</p></span></div>
-        <div><span><p class="afterPoint"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="after"></p></span></div>
-        <div><span><p class="afterEdge"></p><p style="position: absolute;" class="afterFade">B</p></span></div>
+        <div><span>
+                <p class="beforeEdge"></p>
+                <p style="position: absolute;" class="beforeFade">B</p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="before"></p>
+            </span></div>
+        <div><span>
+                <p class="beforePoint"></p>
+            </span></div>
+        <div id="point"><span>
+                <p class="point"></p>
+                <p style="position: absolute;" class="popUp">B</p>
+            </span></div>
+        <div><span>
+                <p class="afterPoint"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="after"></p>
+            </span></div>
+        <div><span>
+                <p class="afterEdge"></p>
+                <p style="position: absolute;" class="afterFade">B</p>
+            </span></div>
     </div>
 
     <div id="textOutput"></div>
@@ -184,7 +250,6 @@
 
         //init tape array
         var tape = [];
-        //Array((document.getElementById("input-string").value.length) + 30).fill('B');
 
         //steps count
         var stepCount = 0;
@@ -202,8 +267,8 @@
         var mlayu = false;
 
         //Enter bikin submit
-        document.getElementById("input-string").addEventListener("keypress", function(event) {
-            if(event.key === "Enter") {
+        document.getElementById("input-string").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
                 event.preventDefault();
                 document.getElementById("input-sim").click();
             }
@@ -223,21 +288,21 @@
 
         function animateLeft() {
             document.getElementById("input-step").disabled = true;
-            for(let x=0; x<document.getElementsByClassName("before").length; x++)
+            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
                 document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
-            for(let x=0; x<document.getElementsByClassName("after").length; x++)
+            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
                 document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
             document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
             document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
-            document.getElementsByClassName("beforeFade")[0].textContent = tape[tempHead-13];
+            document.getElementsByClassName("beforeFade")[0].textContent = tape[tempHead - 13];
             document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
             document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
             document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
             document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
             setTimeout(() => {
-                for(let x=0; x<document.getElementsByClassName("before").length; x++)
+                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
                     document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
-                for(let x=0; x<document.getElementsByClassName("after").length; x++)
+                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
                     document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
                 document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
                 document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
@@ -253,21 +318,21 @@
 
         function animateRight() {
             document.getElementById("input-step").disabled = true;
-            for(let x=0; x<document.getElementsByClassName("before").length; x++)
+            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
                 document.getElementsByClassName("before")[x].classList.toggle("animateRight");
-            for(let x=0; x<document.getElementsByClassName("after").length; x++)
+            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
                 document.getElementsByClassName("after")[x].classList.toggle("animateRight");
             document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
             document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
             document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
             document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
-            document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead+13];
+            document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead + 13];
             document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
             document.getElementsByClassName("point")[0].classList.toggle("animateRight");
             setTimeout(() => {
-                for(let x=0; x<document.getElementsByClassName("before").length; x++)
+                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
                     document.getElementsByClassName("before")[x].classList.toggle("animateRight");
-                for(let x=0; x<document.getElementsByClassName("after").length; x++)
+                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
                     document.getElementsByClassName("after")[x].classList.toggle("animateRight");
                 document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
                 document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
@@ -302,29 +367,23 @@
 
             //obah indikator
             obah = true;
-        
+
             //step anim indikator
             anim = 0;
 
             //run indikator
             mlayu = false;
         }
-        
+
         function display() {
-            for(let x=0, y=tempHead-12; x<25; x++, y++) {
+            for (let x = 0, y = tempHead - 12; x < 25; x++, y++) {
                 //add B to new index
-                if(typeof tape[y] == "undefined")
+                if (typeof tape[y] == "undefined")
                     tape[y] = 'B'
-                
+
                 //output ke masing-masing span
                 output.children[x].children[0].children[0].textContent = tape[y];
             }
-
-            //debug PLEASE ERASE LATER
-            if(state === 18 || !obah)
-                textOutput.textContent = (state === 18 ? "terimo nggeh" : "mboten");
-            else
-                textOutput.textContent = tape + "\nstate: " + state + "\nhead: " + head + "\nheadChar: " + tape[head] + "\nanim: " + anim + "\nstep count: " + stepCount;
         }
 
         function action(replaceWith, move, newState) {
@@ -338,7 +397,7 @@
         }
 
         function step(event) {
-            if(anim === 0) {
+            if (anim === 0) {
                 //mandek
                 if (state === acceptingState)
                     document.getElementById("input-step").disabled = true;
@@ -349,85 +408,85 @@
                     //detek ora obah
                     obah = false;
 
-                    switch(state) {
+                    switch (state) {
                         case 1:
-                            if(tape[head] === '+') action('B', 'R', 2);
-                            else if(tape[head] === '-') action('B', 'R', 3);
+                            if (tape[head] === '+') action('B', 'R', 2);
+                            else if (tape[head] === '-') action('B', 'R', 3);
                             break;
                         case 2:
-                            if(tape[head] === '0') action('0', 'R', 2);
-                            else if(tape[head] === '+') action('1', 'R', 4);
-                            else if(tape[head] === '-') action('1', 'R', 5);
+                            if (tape[head] === '0') action('0', 'R', 2);
+                            else if (tape[head] === '+') action('1', 'R', 4);
+                            else if (tape[head] === '-') action('1', 'R', 5);
                             break;
                         case 3:
-                            if(tape[head] === '0') action('0', 'R', 2);
-                            else if(tape[head] === '+') action('1', 'R', 5);
-                            else if(tape[head] === '-') action('1', 'R', 4);
+                            if (tape[head] === '0') action('0', 'R', 2);
+                            else if (tape[head] === '+') action('1', 'R', 5);
+                            else if (tape[head] === '-') action('1', 'R', 4);
                             break;
                         case 4:
-                            if(tape[head] === '1') action('1', 'R', 4);
-                            else if(tape[head] === '0') action('0', 'R', 4);
-                            else if(tape[head] === 'B') action('+', 'L', 6);
+                            if (tape[head] === '1') action('1', 'R', 4);
+                            else if (tape[head] === '0') action('0', 'R', 4);
+                            else if (tape[head] === 'B') action('+', 'L', 6);
                             break;
                         case 5:
-                            if(tape[head] === '1') action('1', 'R', 5);
-                            else if(tape[head] === '0') action('0', 'R', 5);
-                            else if(tape[head] === 'B') action('-', 'L', 6);
+                            if (tape[head] === '1') action('1', 'R', 5);
+                            else if (tape[head] === '0') action('0', 'R', 5);
+                            else if (tape[head] === 'B') action('-', 'L', 6);
                             break;
                         case 6:
-                            if(tape[head] === '1') action('1', 'L', 6);
-                            else if(tape[head] === '0') action('0', 'L', 6);
-                            else if(tape[head] === 'B') action('B', 'R', 7);
+                            if (tape[head] === '1') action('1', 'L', 6);
+                            else if (tape[head] === '0') action('0', 'L', 6);
+                            else if (tape[head] === 'B') action('B', 'R', 7);
                             break;
                         case 7:
-                            if(tape[head] === '1') action('B', 'R', 16);
-                            else if(tape[head] === '0') action('B', 'R', 8);
+                            if (tape[head] === '1') action('B', 'R', 16);
+                            else if (tape[head] === '0') action('B', 'R', 8);
                             break;
                         case 8:
-                            if(tape[head] === '0') action('0', 'R', 8);
-                            else if(tape[head] === '1') action('1', 'R', 9);
+                            if (tape[head] === '0') action('0', 'R', 8);
+                            else if (tape[head] === '1') action('1', 'R', 9);
                             break;
                         case 9:
-                            if(tape[head] === '0') action('X', 'R', 10);
-                            else if(tape[head] === '1') action('1', 'L', 14);
+                            if (tape[head] === '0') action('X', 'R', 10);
+                            else if (tape[head] === '1') action('1', 'L', 14);
                             break;
                         case 10:
-                            if(tape[head] === '0') action('0', 'R', 10);
-                            else if(tape[head] === '1') action('1', 'R', 11);
+                            if (tape[head] === '0') action('0', 'R', 10);
+                            else if (tape[head] === '1') action('1', 'R', 11);
                             break;
                         case 11:
-                            if(tape[head] === '0') action('0', 'R', 11);
-                            else if(tape[head] === '+') action('+', 'R', 11);
-                            else if(tape[head] === '-') action('-', 'R', 11);
-                            else if(tape[head] === 'B') action('0', 'L', 12);
+                            if (tape[head] === '0') action('0', 'R', 11);
+                            else if (tape[head] === '+') action('+', 'R', 11);
+                            else if (tape[head] === '-') action('-', 'R', 11);
+                            else if (tape[head] === 'B') action('0', 'L', 12);
                             break;
                         case 12:
-                            if(tape[head] === '0') action('0', 'L', 12);
-                            else if(tape[head] === '+') action('+', 'L', 12);
-                            else if(tape[head] === '-') action('-', 'L', 12);
-                            else if(tape[head] === '1') action('1', 'L', 13);
+                            if (tape[head] === '0') action('0', 'L', 12);
+                            else if (tape[head] === '+') action('+', 'L', 12);
+                            else if (tape[head] === '-') action('-', 'L', 12);
+                            else if (tape[head] === '1') action('1', 'L', 13);
                             break;
                         case 13:
-                            if(tape[head] === '0') action('0', 'L', 13);
-                            else if(tape[head] === 'X') action('X', 'R', 9);
+                            if (tape[head] === '0') action('0', 'L', 13);
+                            else if (tape[head] === 'X') action('X', 'R', 9);
                             break;
                         case 14:
-                            if(tape[head] === 'X') action('0', 'L', 14);
-                            else if(tape[head] === '1') action('1', 'L', 15);
+                            if (tape[head] === 'X') action('0', 'L', 14);
+                            else if (tape[head] === '1') action('1', 'L', 15);
                             break;
                         case 15:
-                            if(tape[head] === '0') action('0', 'L', 15);
-                            else if(tape[head] === 'B') action('B', 'R', 7);
+                            if (tape[head] === '0') action('0', 'L', 15);
+                            else if (tape[head] === 'B') action('B', 'R', 7);
                             break;
                         case 16:
-                            if(tape[head] === '0') action('B', 'R', 16);
-                            else if(tape[head] === '1') action('B', 'R', 17);
+                            if (tape[head] === '0') action('B', 'R', 16);
+                            else if (tape[head] === '1') action('B', 'R', 17);
                             break;
                         case 17:
-                            if(tape[head] === '0') action('0', 'R', 17);
-                            else if(tape[head] === '+') action('+', 'R', 17);
-                            else if(tape[head] === '-') action('-', 'R', 17);
-                            else if(tape[head] === 'B') action('1', 'R', acceptingState);
+                            if (tape[head] === '0') action('0', 'R', 17);
+                            else if (tape[head] === '+') action('+', 'R', 17);
+                            else if (tape[head] === '-') action('-', 'R', 17);
+                            else if (tape[head] === 'B') action('1', 'R', acceptingState);
                             break;
                     }
 
@@ -459,8 +518,8 @@
             document.getElementById("input-run").style.background = "";
 
             //apus yang sebelumnya misal ada
-            for(let x=0; x<output.children.length; x++)
-               output.children[x].children[0].children[0].textContent = "";       
+            for (let x = 0; x < output.children.length; x++)
+                output.children[x].children[0].children[0].textContent = "";
         }
 
         function simulate() {
@@ -470,18 +529,18 @@
             document.getElementById("input-step").disabled = false;
             document.getElementById("input-reset").disabled = false;
             document.getElementById("input-run").disabled = false;
-            
+
             //init
             init();
-            
+
             //taruh input ke tape
-            for(let x=0 ;; x++) {
-                if(x<head)
+            for (let x = 0;; x++) {
+                if (x < head)
                     tape[x] = 'B';
                 else {
-                    for(let y=0; y<document.getElementById("input-string").value.length; y++, x++)
+                    for (let y = 0; y < document.getElementById("input-string").value.length; y++, x++)
                         tape[x] = (document.getElementById("input-string").value)[y];
-                    for(let y=0; y<head; y++, x++)
+                    for (let y = 0; y < head; y++, x++)
                         tape[x] = 'B';
                     break;
                 }
@@ -493,8 +552,9 @@
 
         //mlayu detektor
         setInterval(() => {
-            if(mlayu && !(document.getElementById("input-step").disabled)) step();
+            if (mlayu && !(document.getElementById("input-step").disabled)) step();
         }, 50);
     </script>
 </body>
+
 </html>
