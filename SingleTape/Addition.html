@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Turing Machine Simulator</title>
+    <title>Addition - Turing Machine Simulator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -182,11 +182,21 @@
             opacity: 1;
             font-size: xx-large;
         }
+
+        #nav {
+            text-decoration: none;
+            color: black;
+        }
     </style>
 </head>
 
 <body>
-    <h2>Addition</h2>
+    <nav>
+        <h2>
+            <a href="index.html" id="nav">Addition</a>
+        </h2>
+    </nav>
+
     <div id="input-form">
         <div class="text-desc">String</div>
         <div id="input-container">
@@ -302,10 +312,12 @@
     </div>
 
     <script>
+        //START VARIABEL GLOBAL//
+
         //asep setate
         var acceptingState = 21;
-        
-        //head index mulai dari 5 biar kirinya ada B
+
+        //head index mulai dari 15 biar kirinya ada B
         var head = 15;
 
         //buat anim
@@ -339,89 +351,11 @@
         //run indikator
         var mlayu = false;
 
-        //Enter bikin submit
-        document.getElementById("input-string").addEventListener("keypress", function (event) {
-            if (event.key === "Enter") {
-                event.preventDefault();
-                document.getElementById("input-sim").click();
-            }
-        });
-
-        function animatePop() {
-            document.getElementById("input-step").disabled = true;
-            document.getElementsByClassName("point")[0].classList.toggle("animatePop");
-            document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
-            setTimeout(() => {
-                document.getElementsByClassName("point")[0].classList.toggle("animatePop");
-                document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
-                display();
-                document.getElementById("input-step").disabled = false;
-            }, animationInterval);
-        }
-
-        function animateLeft() {
-            document.getElementById("input-step").disabled = true;
-            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-                document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
-            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-                document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
-            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
-            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
-            document.getElementsByClassName("beforeFade")[0].textContent = tape[tempHead - 13];
-            document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
-            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
-            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
-            document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
-            setTimeout(() => {
-                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-                    document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
-                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-                    document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
-                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
-                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
-                document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
-                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
-                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
-                document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
-                tempHead = head;
-                display();
-                document.getElementById("input-step").disabled = false;
-            }, animationInterval);
-        }
-
-        function animateRight() {
-            document.getElementById("input-step").disabled = true;
-            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-                document.getElementsByClassName("before")[x].classList.toggle("animateRight");
-            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-                document.getElementsByClassName("after")[x].classList.toggle("animateRight");
-            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
-            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
-            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
-            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
-            if (typeof tape[tempHead + 13] == "undefined") tape[tempHead + 13] = 'B';
-            document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead + 13];
-            document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
-            document.getElementsByClassName("point")[0].classList.toggle("animateRight");
-            setTimeout(() => {
-                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-                    document.getElementsByClassName("before")[x].classList.toggle("animateRight");
-                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-                    document.getElementsByClassName("after")[x].classList.toggle("animateRight");
-                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
-                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
-                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
-                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
-                document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
-                document.getElementsByClassName("point")[0].classList.toggle("animateRight");
-                tempHead = head;
-                display();
-                document.getElementById("input-step").disabled = false;
-            }, animationInterval);
-        }
+        //END VARIABEL GLOBAL//
+        //START ALAT//
 
         function init() {
-            //head index mulai dari 5 biar kirinya ada B
+            //head index mulai dari 15 biar kirinya ada B
             head = 15;
 
             //buat anim
@@ -449,9 +383,60 @@
             animationInterval = 1100;
         }
 
+        function step(event) {
+            //deteksi anim
+            if (anim === 0) {
+                //mandek
+                if (state === acceptingState)
+                    document.getElementById("input-step").disabled = true;
+                else {
+                    //detek ora obah
+                    obah = false;
+
+                    //lakoni algoritma
+                    algorithm();
+
+                    //mandek ditolak
+                    if (!obah && !(state === acceptingState)) {
+                        document.getElementById("input-step").disabled = true;
+                        statusOutput.textContent = "Rejected";
+                    }
+                }
+            } else {
+                //deteksi animasi ke kiri or tengen
+                (tempHead > head ? animateLeft() : animateRight());
+                anim = 0;
+            }
+        }
+
+        function action(replaceWith, move, newState) {
+            //mlaku nambah
+            stepCount += 1;
+
+            //state ganti
+            state = newState;
+
+            //buat anim
+            tempHead = head;
+
+            //ganti isi tape, geser kanan kiwo
+            tape[(move === 'L' ? head-- : head++)] = replaceWith;
+
+            //obah ceker
+            obah = (state === acceptingState ? false : true);
+
+            //lanjut anim
+            anim = 1;
+            document.getElementsByClassName("popUp")[0].textContent = replaceWith;
+            animatePop();
+        }
+
+        //END ALAT//
+        //START TAMPILAN ANIMASI//
+
         function display() {
             for (let x = 0, y = tempHead - 12; x < 25; x++, y++) {
-                //add B to new index
+                //add B to new index nek ora ono isine
                 if (typeof tape[y] == "undefined")
                     tape[y] = 'B'
 
@@ -459,164 +444,155 @@
                 output.children[x].children[0].children[0].textContent = tape[y];
             }
 
-            //ganti status asep or tidak
-            if (state === acceptingState || !obah) {
-                statusOutput.textContent = (state === acceptingState ? "Accepted" : "Rejected");
-            }
-
-            stepCountOutput.textContent = stepCount;
-            stateOutput.textContent = "q" + state;
+            //display isi tape ke status bar
             tapeOutput.textContent = "";
             for (let x = 0; x < tape.length; x++) {
                 if (tape[x] != 'B')
                     tapeOutput.textContent += " " + tape[x] + " ";
             }
-        }
 
-        function action(replaceWith, move, newState) {
-            state = newState;
-            tempHead = head;
-            tape[(move === 'L' ? head-- : head++)] = replaceWith;
-            obah = (state === acceptingState ? false : true);
-            anim = 1;
-            document.getElementsByClassName("popUp")[0].textContent = replaceWith;
-            animatePop();
-        }
-
-        function step(event) {
+            //tampilin ke status bar nek wes kelar animasi kanan kiwo
             if (anim === 0) {
-                //mandek
-                if (state === acceptingState)
-                    document.getElementById("input-step").disabled = true;
-                else {
-                    //mlaku siji
-                    stepCount += 1;
-
-                    //detek ora obah
-                    obah = false;
-
-                    switch (state) {
-                        case 1:
-                            if (tape[head] === '+') action('+', 'R', 2);
-                            else if (tape[head] === '-') action('-', 'R', 3);
-                            break;
-                        case 2:
-                            if (tape[head] === '0') action('0', 'R', 2);
-                            else if (tape[head] === '+') action('+', 'L', 4);
-                            else if (tape[head] === '-') action('-', 'L', 9);
-                            break;
-                        case 3:
-                            if (tape[head] === '0') action('0', 'R', 3);
-                            else if (tape[head] === '-') action('-', 'L', 4);
-                            else if (tape[head] === '+') action('+', 'L', 9);
-                            break;
-                        case 4:
-                            if (tape[head] === '0') action('0', 'L', 4);
-                            else if (tape[head] === '+') action('B', 'R', 5);
-                            else if (tape[head] === '-') action('B', 'R', 5);
-                            break;
-                        case 5:
-                            if (tape[head] === '+') action('+', 'R', 8);
-                            else if (tape[head] === '-') action('-', 'R', 8);
-                            else if (tape[head] === '0') action('B', 'R', 6);
-                            break;
-                        case 6:
-                            if (tape[head] === '0') action('0', 'R', 6);
-                            else if (tape[head] === '+') action('+', 'R', 6);
-                            else if (tape[head] === '-') action('-', 'R', 6);
-                            else if (tape[head] === 'B') action('0', 'L', 7);
-                            break;
-                        case 7:
-                            if (tape[head] === '0') action('0', 'L', 7);
-                            else if (tape[head] === '+') action('+', 'L', 7);
-                            else if (tape[head] === '-') action('-', 'L', 7);
-                            else if (tape[head] === 'B') action('B', 'R', 5);
-                            break;
-                        case 8:
-                            if (tape[head] === '0') action('0', 'R', 8);
-                            else if (tape[head] === 'B') action('1', 'R', acceptingState);
-                            break;
-                        case 9:
-                            if (tape[head] === 'B') action('B', 'L', 9);
-                            else if (tape[head] === '0') action('B', 'R', 10);
-                            else if (tape[head] === '-') action('B', 'R', 17);
-                            else if (tape[head] === '+') action('B', 'R', 17);
-                            break;
-                        case 10:
-                            if (tape[head] === 'B') action('B', 'R', 10);
-                            else if (tape[head] === '+') action('+', 'R', 11);
-                            else if (tape[head] === '-') action('-', 'R', 11);
-                            break;
-                        case 11:
-                            if (tape[head] === '0') action('0', 'R', 11);
-                            else if (tape[head] === 'B') action('B', 'L', 12);
-                            break;
-                        case 12:
-                            if (tape[head] === '0') action('B', 'L', 13);
-                            else if (tape[head] === '+') action('B', 'L', 14);
-                            else if (tape[head] === '-') action('B', 'L', 14);
-                            break;
-                        case 13:
-                            if (tape[head] === '0') action('0', 'L', 13);
-                            else if (tape[head] === '+') action('+', 'L', 13);
-                            else if (tape[head] === '-') action('-', 'L', 13);
-                            else if (tape[head] === 'B') action('B', 'L', 9);
-                            break;
-                        case 14:
-                            if (tape[head] === 'B') action('B', 'L', 14);
-                            else if (tape[head] === '+') action('+', 'R', 15);
-                            else if (tape[head] === '-') action('-', 'R', 15);
-                            else if (tape[head] === '0') action('0', 'R', 15);
-                            break;
-                        case 15:
-                            if (tape[head] === 'B') action('0', 'R', 16);
-                            break;
-                        case 16:
-                            if (tape[head] === 'B') action('1', 'R', acceptingState);
-                            break;
-                        case 17:
-                            if (tape[head] === 'B') action('B', 'R', 17);
-                            else if (tape[head] === '+') action('+', 'R', 18);
-                            else if (tape[head] === '-') action('-', 'R', 18);
-                            break;
-                        case 18:
-                            if (tape[head] === 'B') action('B', 'L', 19);
-                            else if (tape[head] === '0') action('0', 'R', 20);
-                            break;
-                        case 19:
-                            if (tape[head] === '-') action('1', 'R', acceptingState);
-                            else if (tape[head] === '+') action('+', 'R', acceptingState);
-                            break;
-                        case 20:
-                            if (tape[head] === '0') action('0', 'R', 20);
-                            else if (tape[head] === 'B') action('1', 'R', acceptingState);
-                            break;
-                    }
-
-                    //mandek
-                    if (!obah && !(state === acceptingState)) {
-                        document.getElementById("input-step").disabled = true;
-                        statusOutput.textContent = "Rejected";
-                    }
-                }
-            } else {
-                anim = 0;
-                (tempHead > head ? animateLeft() : animateRight());
+                //ganti status asep or tidak
+                if (state === acceptingState || !obah)
+                    statusOutput.textContent = (state === acceptingState ? "Accepted" : "Rejected");
+                stepCountOutput.textContent = stepCount;
+                stateOutput.textContent = "q" + state;
             }
         }
 
-        function run() {
-            mlayu = !mlayu;
-            document.getElementById("input-run").style.background = (mlayu ? "green" : "red");
+        function animatePop() {
+            //matiin tombol step
+            document.getElementById("input-step").disabled = true;
+
+            //animasi
+            document.getElementsByClassName("point")[0].classList.toggle("animatePop");
+            document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+
+            //end animasi display yang sebenarnya
+            setTimeout(() => {
+                document.getElementsByClassName("point")[0].classList.toggle("animatePop");
+                document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+                display();
+
+                //tombol step murup meneh
+                document.getElementById("input-step").disabled = false;
+            }, animationInterval);
         }
 
-        function fast() {
-            animationInterval = (animationInterval === 1100 ? 50 : 1100);
-            document.getElementById("input-fast").style.background = (animationInterval === 1100 ? "red" : "green");
+        function animateLeft() {
+            //matiin tombol step
+            document.getElementById("input-step").disabled = true;
+
+            //animasi
+            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
+            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("beforeFade")[0].textContent = tape[tempHead - 13]; //trick tengen kiwo
+            document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
+            document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
+
+            //end animasi display yang sebenarnya
+            setTimeout(() => {
+                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                    document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
+                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                    document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
+                document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
+                tempHead = head; //back to realiti
+                display();
+
+                //tombol step murop maneh
+                document.getElementById("input-step").disabled = (!obah ? true : false);
+            }, animationInterval);
+        }
+
+        function animateRight() {
+            //matiin tombol step
+            document.getElementById("input-step").disabled = true;
+
+            //animasi
+            for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                document.getElementsByClassName("before")[x].classList.toggle("animateRight");
+            for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                document.getElementsByClassName("after")[x].classList.toggle("animateRight");
+            document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
+            if (typeof tape[tempHead + 13] == "undefined") tape[tempHead + 13] = 'B'; //jogoni undefined
+            document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead + 13]; //trick tengen kiri
+            document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
+            document.getElementsByClassName("point")[0].classList.toggle("animateRight");
+
+            //end animasi display yang sebenarnya
+            setTimeout(() => {
+                for (let x = 0; x < document.getElementsByClassName("before").length; x++)
+                    document.getElementsByClassName("before")[x].classList.toggle("animateRight");
+                for (let x = 0; x < document.getElementsByClassName("after").length; x++)
+                    document.getElementsByClassName("after")[x].classList.toggle("animateRight");
+                document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
+                document.getElementsByClassName("point")[0].classList.toggle("animateRight");
+                tempHead = head; //back to realiti club
+                display();
+
+                //tombol step murooppp
+                document.getElementById("input-step").disabled = (!obah ? true : false);
+            }, animationInterval);
+        }
+
+        //END TAMPILAN ANIMASI//
+        //START TOMBOL//
+
+        function simulate() {
+            //enable-disable button
+            document.getElementById("input-string").disabled = true;
+            document.getElementById("input-sim").disabled = true;
+            document.getElementById("input-step").disabled = false;
+            document.getElementById("input-reset").disabled = false;
+            document.getElementById("input-run").disabled = false;
+            document.getElementById("input-fast").disabled = false;
+
+            //init
+            init();
+
+            //taruh input ke tape
+            for (let x = 0;; x++) {
+                //sebelum head B kabeh
+                if (x < head)
+                    tape[x] = 'B';
+                else {
+                    //dari input
+                    for (let y = 0; y < document.getElementById("input-string").value.length; y++, x++)
+                        tape[x] = (document.getElementById("input-string").value)[y];
+
+                    //jogoni setelah input kei B
+                    for (let y = 0; y < head; y++, x++)
+                        tape[x] = 'B';
+                    break;
+                }
+            }
+
+            //mendelik
+            display();
         }
 
         function reset() {
-            //disable button
+            //enable-disable button
             document.getElementById("input-fast").disabled = true;
             document.getElementById("input-run").disabled = true;
             document.getElementById("input-reset").disabled = true;
@@ -634,48 +610,147 @@
             mlayu = false;
             document.getElementById("input-run").style.background = "";
 
-            //fast
+            //ora fast
             animationInterval = 1100;
             document.getElementById("input-fast").style.background = "";
 
-            //apus yang sebelumnya misal ada
+            //apus yang sebelumnya
             for (let x = 0; x < output.children.length; x++)
                 output.children[x].children[0].children[0].textContent = "";
         }
 
-        function simulate() {
-            //disable button
-            document.getElementById("input-string").disabled = true;
-            document.getElementById("input-sim").disabled = true;
-            document.getElementById("input-step").disabled = false;
-            document.getElementById("input-reset").disabled = false;
-            document.getElementById("input-run").disabled = false;
-            document.getElementById("input-fast").disabled = false;
-
-            //init
-            init();
-
-            //taruh input ke tape
-            for (let x = 0;; x++) {
-                if (x < head)
-                    tape[x] = 'B';
-                else {
-                    for (let y = 0; y < document.getElementById("input-string").value.length; y++, x++)
-                        tape[x] = (document.getElementById("input-string").value)[y];
-                    for (let y = 0; y < head; y++, x++)
-                        tape[x] = 'B';
-                    break;
-                }
-            }
-
-            //mendelik
-            display();
+        function run() {
+            //pokoe mlayu
+            mlayu = !mlayu;
+            document.getElementById("input-run").style.background = (mlayu ? "green" : "red");
         }
+
+        function fast() {
+            //ai em spiid
+            animationInterval = (animationInterval === 1100 ? 50 : 1100);
+            document.getElementById("input-fast").style.background = (animationInterval === 1100 ? "red" : "green");
+        }
+
+        //END TOMBOL//
+        //START TAMBAHAN//
+
+        //Enter bikin submit
+        document.getElementById("input-string").addEventListener("keypress", function (event) {
+            if (event.key === "Enter") {
+                event.preventDefault();
+                document.getElementById("input-sim").click();
+            }
+        });
 
         //mlayu detektor
         setInterval(() => {
             if (mlayu && !(document.getElementById("input-step").disabled)) step();
         }, 50);
+
+        //END TAMBAHAN//
+        //FUNGSI UTAMA ALGORITMA//
+
+        function algorithm() {
+            switch (state) {
+                case 1:
+                    if (tape[head] === '+') action('+', 'R', 2);
+                    else if (tape[head] === '-') action('-', 'R', 3);
+                    break;
+                case 2:
+                    if (tape[head] === '0') action('0', 'R', 2);
+                    else if (tape[head] === '+') action('+', 'L', 4);
+                    else if (tape[head] === '-') action('-', 'L', 9);
+                    break;
+                case 3:
+                    if (tape[head] === '0') action('0', 'R', 3);
+                    else if (tape[head] === '-') action('-', 'L', 4);
+                    else if (tape[head] === '+') action('+', 'L', 9);
+                    break;
+                case 4:
+                    if (tape[head] === '0') action('0', 'L', 4);
+                    else if (tape[head] === '+') action('B', 'R', 5);
+                    else if (tape[head] === '-') action('B', 'R', 5);
+                    break;
+                case 5:
+                    if (tape[head] === '+') action('+', 'R', 8);
+                    else if (tape[head] === '-') action('-', 'R', 8);
+                    else if (tape[head] === '0') action('B', 'R', 6);
+                    break;
+                case 6:
+                    if (tape[head] === '0') action('0', 'R', 6);
+                    else if (tape[head] === '+') action('+', 'R', 6);
+                    else if (tape[head] === '-') action('-', 'R', 6);
+                    else if (tape[head] === 'B') action('0', 'L', 7);
+                    break;
+                case 7:
+                    if (tape[head] === '0') action('0', 'L', 7);
+                    else if (tape[head] === '+') action('+', 'L', 7);
+                    else if (tape[head] === '-') action('-', 'L', 7);
+                    else if (tape[head] === 'B') action('B', 'R', 5);
+                    break;
+                case 8:
+                    if (tape[head] === '0') action('0', 'R', 8);
+                    else if (tape[head] === 'B') action('1', 'R', acceptingState);
+                    break;
+                case 9:
+                    if (tape[head] === 'B') action('B', 'L', 9);
+                    else if (tape[head] === '0') action('B', 'R', 10);
+                    else if (tape[head] === '-') action('B', 'R', 17);
+                    else if (tape[head] === '+') action('B', 'R', 17);
+                    break;
+                case 10:
+                    if (tape[head] === 'B') action('B', 'R', 10);
+                    else if (tape[head] === '+') action('+', 'R', 11);
+                    else if (tape[head] === '-') action('-', 'R', 11);
+                    break;
+                case 11:
+                    if (tape[head] === '0') action('0', 'R', 11);
+                    else if (tape[head] === 'B') action('B', 'L', 12);
+                    break;
+                case 12:
+                    if (tape[head] === '0') action('B', 'L', 13);
+                    else if (tape[head] === '+') action('B', 'L', 14);
+                    else if (tape[head] === '-') action('B', 'L', 14);
+                    break;
+                case 13:
+                    if (tape[head] === '0') action('0', 'L', 13);
+                    else if (tape[head] === '+') action('+', 'L', 13);
+                    else if (tape[head] === '-') action('-', 'L', 13);
+                    else if (tape[head] === 'B') action('B', 'L', 9);
+                    break;
+                case 14:
+                    if (tape[head] === 'B') action('B', 'L', 14);
+                    else if (tape[head] === '+') action('+', 'R', 15);
+                    else if (tape[head] === '-') action('-', 'R', 15);
+                    else if (tape[head] === '0') action('0', 'R', 15);
+                    break;
+                case 15:
+                    if (tape[head] === 'B') action('0', 'R', 16);
+                    break;
+                case 16:
+                    if (tape[head] === 'B') action('1', 'R', acceptingState);
+                    break;
+                case 17:
+                    if (tape[head] === 'B') action('B', 'R', 17);
+                    else if (tape[head] === '+') action('+', 'R', 18);
+                    else if (tape[head] === '-') action('-', 'R', 18);
+                    break;
+                case 18:
+                    if (tape[head] === 'B') action('B', 'L', 19);
+                    else if (tape[head] === '0') action('0', 'R', 20);
+                    break;
+                case 19:
+                    if (tape[head] === '-') action('1', 'R', acceptingState);
+                    else if (tape[head] === '+') action('+', 'R', acceptingState);
+                    break;
+                case 20:
+                    if (tape[head] === '0') action('0', 'R', 20);
+                    else if (tape[head] === 'B') action('1', 'R', acceptingState);
+                    break;
+            }
+        }
+
+        //END FUNGSI UTAMA ALGORITMA
     </script>
 </body>
 
