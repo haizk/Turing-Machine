@@ -28,7 +28,7 @@ function multiplication() {
             break;
         case 7:
             if (tape1[head1] === '0' && tape2[head2] === "0" && tape3[head3] === "B") action('B', '0', '0', 'S', 'L', 'R', 8);
-            else if (tape1[head1] === '1' && tape2[head2] === "0" && tape3[head3] === "B") action('B', '0', '1', 'S', 'S', 'S', 10);
+            else if (tape1[head1] === '1' && tape2[head2] === "0" && tape3[head3] === "B") action('B', '0', '1', 'S', 'S', 'S', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 8:
             if (tape1[head1] === 'B' && tape2[head2] === "0" && tape3[head3] === "B") action('B', '0', '0', 'S', 'L', 'R', 8);
