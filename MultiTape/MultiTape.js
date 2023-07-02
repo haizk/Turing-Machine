@@ -149,10 +149,20 @@ function step() {
             }
         }
     } else {
+        //matiin tombol step
+        document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = true;
+
         //deteksi animasi ke kiri or tengen
         (tempHead1 > head1 ? animateLeft1() : animateRight1());
         (tempHead2 > head2 ? animateLeft2() : animateRight2());
         (tempHead3 > head3 ? animateLeft3() : animateRight3());
+        setTimeout(() => {
+            display();
+
+            //tombol step murop porak mboh, nek reset murop
+            document.getElementById("input-step").disabled = (!obah ? true : false);
+            document.getElementById("input-reset").disabled = false;
+        }, animationInterval);
         anim = 0;
     }
 }
@@ -171,8 +181,8 @@ function action(replaceWith1, replaceWith2, replaceWith3, move1, move2, move3, n
 
     //ganti isi tape, geser kanan kiwo
     tape1[(move1 === 'L' ? head1-- : head1++)] = replaceWith1;
-    tape1[(move2 === 'L' ? head2-- : head2++)] = replaceWith2;
-    tape1[(move3 === 'L' ? head3-- : head3++)] = replaceWith3;
+    tape2[(move2 === 'L' ? head2-- : head2++)] = replaceWith2;
+    tape3[(move3 === 'L' ? head3-- : head3++)] = replaceWith3;
 
     //obah ceker
     obah = (state === acceptingState[document.getElementById("nav").textContent] ? false : true);
@@ -220,10 +230,12 @@ function display() {
         if (tape1[x] != 'B')
             tapeOutput1.textContent += " " + tape1[x] + " ";
     }
+    tapeOutput2.textContent = "";
     for (let x = 0; x < tape2.length; x++) {
         if (tape2[x] != 'B')
             tapeOutput2.textContent += " " + tape2[x] + " ";
     }
+    tapeOutput3.textContent = "";
     for (let x = 0; x < tape3.length; x++) {
         if (tape3[x] != 'B')
             tapeOutput3.textContent += " " + tape3[x] + " ";
@@ -244,13 +256,22 @@ function animatePop() {
     document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = true;
 
     //animasi
-    document.getElementsByClassName("point")[0].classList.toggle("animatePop");
-    document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+    document.getElementsByClassName("point1")[0].classList.toggle("animatePop");
+    document.getElementsByClassName("popUp1")[0].classList.toggle("animatePop");
+    document.getElementsByClassName("point2")[0].classList.toggle("animatePop");
+    document.getElementsByClassName("popUp2")[0].classList.toggle("animatePop");
+    document.getElementsByClassName("point3")[0].classList.toggle("animatePop");
+    document.getElementsByClassName("popUp3")[0].classList.toggle("animatePop");
+    
 
     //end animasi display yang sebenarnya
     setTimeout(() => {
-        document.getElementsByClassName("point")[0].classList.toggle("animatePop");
-        document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
+        document.getElementsByClassName("point1")[0].classList.toggle("animatePop");
+        document.getElementsByClassName("popUp1")[0].classList.toggle("animatePop");
+        document.getElementsByClassName("point2")[0].classList.toggle("animatePop");
+        document.getElementsByClassName("popUp2")[0].classList.toggle("animatePop");
+        document.getElementsByClassName("point3")[0].classList.toggle("animatePop");
+        document.getElementsByClassName("popUp3")[0].classList.toggle("animatePop");
         display();
 
         //tombol reset dan step murup meneh
@@ -258,80 +279,186 @@ function animatePop() {
     }, animationInterval);
 }
 
-function animateLeft() {
-    //matiin tombol reset dan step
-    document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = true;
-
+function animateLeft1() {
     //animasi
-    for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-        document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
-    for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-        document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
-    document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("beforeFade")[0].textContent = tape[tempHead - 13]; //trick tengen kiwo
-    document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
+    for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
+        document.getElementsByClassName("before1")[x].classList.toggle("animateLeft");
+    for (let x = 0; x < document.getElementsByClassName("after1").length; x++)
+        document.getElementsByClassName("after1")[x].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforePoint1")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforeEdge1")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforeFade1")[0].textContent = tape1[tempHead1 - 13]; //trick tengen kiwo
+    document.getElementsByClassName("beforeFade1")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("afterPoint1")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("afterEdge1")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("point1")[0].classList.toggle("animateLeft");
 
     //end animasi display yang sebenarnya
     setTimeout(() => {
-        for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-            document.getElementsByClassName("before")[x].classList.toggle("animateLeft");
-        for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-            document.getElementsByClassName("after")[x].classList.toggle("animateLeft");
-        document.getElementsByClassName("beforePoint")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("beforeFade")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("afterPoint")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("afterEdge")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("point")[0].classList.toggle("animateLeft");
-        tempHead = head; //back to realiti
-        display();
-
-        //tombol step murop porak mboh, nek reset murop
-        document.getElementById("input-step").disabled = (!obah ? true : false);
-        document.getElementById("input-reset").disabled = false;
+        for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
+            document.getElementsByClassName("before1")[x].classList.toggle("animateLeft");
+        for (let x = 0; x < document.getElementsByClassName("after1").length; x++)
+            document.getElementsByClassName("after1")[x].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforePoint1")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforeEdge1")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforeFade1")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("afterPoint1")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("afterEdge1")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("point1")[0].classList.toggle("animateLeft");
+        tempHead1 = head1; //back to realiti
     }, animationInterval);
 }
 
-function animateRight() {
-    //matiin tombol step
-    document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = true;
-
+function animateLeft2() {
     //animasi
-    for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-        document.getElementsByClassName("before")[x].classList.toggle("animateRight");
-    for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-        document.getElementsByClassName("after")[x].classList.toggle("animateRight");
-    document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
-    if (typeof tape[tempHead + 13] == "undefined") tape[tempHead + 13] = 'B'; //jogoni undefined
-    document.getElementsByClassName("afterFade")[0].textContent = tape[tempHead + 13]; //trick tengen kiri
-    document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("point")[0].classList.toggle("animateRight");
+    for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
+        document.getElementsByClassName("before2")[x].classList.toggle("animateLeft");
+    for (let x = 0; x < document.getElementsByClassName("after2").length; x++)
+        document.getElementsByClassName("after2")[x].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforePoint2")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforeEdge2")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforeFade2")[0].textContent = tape2[tempHead2 - 13]; //trick tengen kiwo
+    document.getElementsByClassName("beforeFade2")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("afterPoint2")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("afterEdge2")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("point2")[0].classList.toggle("animateLeft");
 
     //end animasi display yang sebenarnya
     setTimeout(() => {
-        for (let x = 0; x < document.getElementsByClassName("before").length; x++)
-            document.getElementsByClassName("before")[x].classList.toggle("animateRight");
-        for (let x = 0; x < document.getElementsByClassName("after").length; x++)
-            document.getElementsByClassName("after")[x].classList.toggle("animateRight");
-        document.getElementsByClassName("beforePoint")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("beforeEdge")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("afterPoint")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("afterEdge")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("afterFade")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("point")[0].classList.toggle("animateRight");
-        tempHead = head; //back to realiti club
-        display();
+        for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
+            document.getElementsByClassName("before2")[x].classList.toggle("animateLeft");
+        for (let x = 0; x < document.getElementsByClassName("after2").length; x++)
+            document.getElementsByClassName("after2")[x].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforePoint2")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforeEdge2")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforeFade2")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("afterPoint2")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("afterEdge2")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("point2")[0].classList.toggle("animateLeft");
+        tempHead2 = head2; //back to realiti
+    }, animationInterval);
+}
 
-        //tombol step murop porak mboh, nek reset murop
-        document.getElementById("input-step").disabled = (!obah ? true : false);
-        document.getElementById("input-reset").disabled = false;
+function animateLeft3() {
+    //animasi
+    for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
+        document.getElementsByClassName("before3")[x].classList.toggle("animateLeft");
+    for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
+        document.getElementsByClassName("after3")[x].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("beforeFade3")[0].textContent = tape3[tempHead3 - 13]; //trick tengen kiwo
+    document.getElementsByClassName("beforeFade3")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateLeft");
+    document.getElementsByClassName("point3")[0].classList.toggle("animateLeft");
+
+    //end animasi display yang sebenarnya
+    setTimeout(() => {
+        for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
+            document.getElementsByClassName("before3")[x].classList.toggle("animateLeft");
+        for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
+            document.getElementsByClassName("after3")[x].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("beforeFade3")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateLeft");
+        document.getElementsByClassName("point3")[0].classList.toggle("animateLeft");
+        tempHead3 = head3; //back to realiti
+    }, animationInterval);
+}
+
+function animateRight1() {
+    //animasi
+    for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
+        document.getElementsByClassName("before1")[x].classList.toggle("animateRight");
+    for (let x = 0; x < document.getElementsByClassName("after1").length; x++)
+        document.getElementsByClassName("after1")[x].classList.toggle("animateRight");
+    document.getElementsByClassName("beforePoint1")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("beforeEdge1")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("afterPoint1")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("afterEdge1")[0].classList.toggle("animateRight");
+    if (typeof tape1[tempHead1 + 13] == "undefined") tape1[tempHead1 + 13] = 'B'; //jogoni undefined
+    document.getElementsByClassName("afterFade1")[0].textContent = tape1[tempHead1 + 13]; //trick tengen kiri
+    document.getElementsByClassName("afterFade1")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("point1")[0].classList.toggle("animateRight");
+
+    //end animasi display yang sebenarnya
+    setTimeout(() => {
+        for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
+            document.getElementsByClassName("before1")[x].classList.toggle("animateRight");
+        for (let x = 0; x < document.getElementsByClassName("after1").length; x++)
+            document.getElementsByClassName("after1")[x].classList.toggle("animateRight");
+        document.getElementsByClassName("beforePoint1")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("beforeEdge1")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterPoint1")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterEdge1")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterFade1")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("point1")[0].classList.toggle("animateRight");
+        tempHead1 = head1; //back to realiti club
+    }, animationInterval);
+}
+
+function animateRight2() {
+    //animasi
+    for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
+        document.getElementsByClassName("before2")[x].classList.toggle("animateRight");
+    for (let x = 0; x < document.getElementsByClassName("after2").length; x++)
+        document.getElementsByClassName("after2")[x].classList.toggle("animateRight");
+    document.getElementsByClassName("beforePoint2")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("beforeEdge2")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("afterPoint2")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("afterEdge2")[0].classList.toggle("animateRight");
+    if (typeof tape2[tempHead2 + 13] == "undefined") tape2[tempHead2 + 13] = 'B'; //jogoni undefined
+    document.getElementsByClassName("afterFade2")[0].textContent = tape2[tempHead2 + 13]; //trick tengen kiri
+    document.getElementsByClassName("afterFade2")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("point2")[0].classList.toggle("animateRight");
+
+    //end animasi display yang sebenarnya
+    setTimeout(() => {
+        for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
+            document.getElementsByClassName("before2")[x].classList.toggle("animateRight");
+        for (let x = 0; x < document.getElementsByClassName("after2").length; x++)
+            document.getElementsByClassName("after2")[x].classList.toggle("animateRight");
+        document.getElementsByClassName("beforePoint2")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("beforeEdge2")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterPoint2")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterEdge2")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterFade2")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("point2")[0].classList.toggle("animateRight");
+        tempHead2 = head2; //back to realiti club
+    }, animationInterval);
+}
+
+function animateRight3() {
+    //animasi
+    for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
+        document.getElementsByClassName("before3")[x].classList.toggle("animateRight");
+    for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
+        document.getElementsByClassName("after3")[x].classList.toggle("animateRight");
+    document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateRight");
+    if (typeof tape3[tempHead3 + 13] == "undefined") tape3[tempHead3 + 13] = 'B'; //jogoni undefined
+    document.getElementsByClassName("afterFade3")[0].textContent = tape3[tempHead3 + 13]; //trick tengen kiri
+    document.getElementsByClassName("afterFade3")[0].classList.toggle("animateRight");
+    document.getElementsByClassName("point3")[0].classList.toggle("animateRight");
+
+    //end animasi display yang sebenarnya
+    setTimeout(() => {
+        for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
+            document.getElementsByClassName("before3")[x].classList.toggle("animateRight");
+        for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
+            document.getElementsByClassName("after3")[x].classList.toggle("animateRight");
+        document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("afterFade3")[0].classList.toggle("animateRight");
+        document.getElementsByClassName("point3")[0].classList.toggle("animateRight");
+        tempHead3 = head3; //back to realiti club
     }, animationInterval);
 }
 
@@ -359,24 +486,26 @@ function simulate() {
     //taruh input ke tape
     for (let x = 0;; x++) {
         //sebelum head B kabeh
-        if (x < head)
-            tape[x] = 'B';
+        if (x < head1)
+            tape1[x] = 'B';
         else {
             //dari input
             for (let y = 0; y < document.getElementById("input-string").value.length; y++, x++) {
                 //kalo space diskip gamashok tape
                 if (((document.getElementById("input-string").value)[y] != ' '))
-                    tape[x] = (document.getElementById("input-string").value)[y];
+                    tape1[x] = (document.getElementById("input-string").value)[y];
                 else
                     x--;
             }
 
             //jogoni setelah input kei B
-            for (let y = 0; y < head; y++, x++)
-                tape[x] = 'B';
+            for (let y = 0; y < head1; y++, x++)
+                tape1[x] = 'B';
             break;
         }
     }
+    for (let x = 0; x<2 * head1; x++)
+        tape2[x] = tape3[x] = 'B';
 
     //mendelik
     display();
@@ -394,7 +523,9 @@ function reset() {
     //reset status
     stepCountOutput.textContent = "";
     stateOutput.textContent = "";
-    tapeOutput.textContent = "";
+    tapeOutput1.textContent = "";
+    tapeOutput2.textContent = "";
+    tapeOutput3.textContent = "";
     statusOutput.textContent = "";
 
     //ora mlayu
@@ -407,7 +538,11 @@ function reset() {
 
     //apus yang sebelumnya
     for (let x = 0; x < output.children.length; x++)
-        output.children[x].children[0].children[0].textContent = "";
+        output1.children[x].children[0].children[0].textContent = "";
+    for (let x = 0; x < output.children.length; x++)
+        output2.children[x].children[0].children[0].textContent = "";
+    for (let x = 0; x < output.children.length; x++)
+        output3.children[x].children[0].children[0].textContent = "";
 }
 
 function run() {
@@ -444,8 +579,8 @@ setInterval(() => {
 function addition() {
     switch (state) {
         case 1:
-            if (tape[head] === '+') action('+', 'R', 2);
-            else if (tape[head] === '-') action('-', 'R', 3);
+            if (tape1[head1] === '+' && tape2[head2] === "B" && tape3[head3] === "B") action('+', 'B', 'B', 'R', 'R', 'R', 2);
+            else if (tape1[head1] === '+' && tape2[head2] === "B" && tape3[head3] === "B") action('+', 'B', 'B', 'R', 'R', 'R', 2);
             break;
         case 2:
             if (tape[head] === '0') action('0', 'R', 2);
