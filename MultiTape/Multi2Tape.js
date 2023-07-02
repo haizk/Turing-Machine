@@ -810,7 +810,7 @@ function addition() {
             break;
         case 9:
             if (tape1[head1] === '0' && tape2[head2] === "B") action('0', '0', 'R', 'R', 9);
-            else if (tape1[head1] === '-' && tape2[head2] === "B") action('-', 'B', 'R', 'S',10);
+            else if (tape1[head1] === '-' && tape2[head2] === "B") action('-', 'B', 'R', 'S', 10);
             else if (tape1[head1] === '+' && tape2[head2] === "B") action('+', 'B', 'L', 'S', 11);
             break;
         case 10:
@@ -820,10 +820,10 @@ function addition() {
         case 12:
             if (tape1[head1] === '0' && tape2[head2] === "B") action('B', 'B', 'R', 'S', 12);
             else if (tape1[head1] === '+' && tape2[head2] === "B") action('+', 'B', 'R', 'S', 13);
-            break; 
-        case 13: 
+            break;
+        case 13:
             if (tape1[head1] === '0' && tape2[head2] === "B") action('0', 'B', 'R', 'S', 13);
-            else if (tape1[head1] === 'B' && tape2[head2] === "B") action('B', 'B', 'L', 'L',14);
+            else if (tape1[head1] === 'B' && tape2[head2] === "B") action('B', 'B', 'L', 'L', 14);
             break;
         case 14:
             if (tape1[head1] === '0' && tape2[head2] === "0") action('B', 'B', 'L', 'L', 14);
@@ -843,9 +843,8 @@ function addition() {
         case 18:
             if (tape1[head1] === 'B' && tape2[head2] === "B") action('1', 'B', 'S', 'S', acceptingState[document.getElementById("nav").textContent]);
             break;
-    
+
     }
 }
-
 
 //END FUNGSI UTAMA ALGORITMA
