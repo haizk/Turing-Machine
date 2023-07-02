@@ -25,22 +25,18 @@ acceptingState["Binary Logarithm"] = 9;
 //head index mulai dari 15 biar kirinya ada B
 var head1 = 15;
 var head2 = 15;
-var head3 = 15;
 
 //buat anim
 var tempHead1 = head1;
 var tempHead2 = head2;
-var tempHead3 = head3;
 
 //ambil div id output yang udah disiapin
 var output1 = document.getElementById("output1");
 var output2 = document.getElementById("output2");
-var output3 = document.getElementById("output3");
 var stepCountOutput = document.getElementById("stepCountOutput");
 var stateOutput = document.getElementById("stateOutput");
 var tapeOutput1 = document.getElementById("tapeOutput1");
 var tapeOutput2 = document.getElementById("tapeOutput2");
-var tapeOutput3 = document.getElementById("tapeOutput3");
 var statusOutput = document.getElementById("statusOutput");
 
 //interval animation
@@ -49,7 +45,6 @@ var animationInterval = 1100;
 //init tape array
 var tape1 = [];
 var tape2 = [];
-var tape3 = [];
 
 //steps count
 var stepCount = 0;
@@ -73,17 +68,14 @@ function init() {
     //head index mulai dari 15 biar kirinya ada B
     head1 = 15;
     head2 = 15;
-    head3 = 15;
 
     //buat anim
     tempHead1 = head1;
     tempHead2 = head2;
-    tempHead3 = head3;
 
     //init tape array
     tape1 = [];
     tape2 = [];
-    tape3 = [];
 
     //steps count
     stepCount = 0;
@@ -122,12 +114,6 @@ function step() {
                 case "Subtraction":
                     subtraction();
                     break;
-                case "Multiplication":
-                    multiplication();
-                    break;
-                case "Division":
-                    division();
-                    break;
                 case "Factorial":
                     factorial();
                     break;
@@ -155,7 +141,6 @@ function step() {
         //deteksi animasi ke kiri or tengen
         (tempHead1 > head1 ? animateLeft1() : animateRight1());
         (tempHead2 > head2 ? animateLeft2() : animateRight2());
-        (tempHead3 > head3 ? animateLeft3() : animateRight3());
         setTimeout(() => {
             display();
 
@@ -167,7 +152,7 @@ function step() {
     }
 }
 
-function action(replaceWith1, replaceWith2, replaceWith3, move1, move2, move3, newState) {
+function action(replaceWith1, replaceWith2, move1, move2, newState) {
     //mlaku nambah
     stepCount += 1;
 
@@ -177,12 +162,14 @@ function action(replaceWith1, replaceWith2, replaceWith3, move1, move2, move3, n
     //buat anim
     tempHead1 = head1;
     tempHead2 = head2;
-    tempHead3 = head3;
 
     //ganti isi tape, geser kanan kiwo
-    tape1[(move1 === 'L' ? head1-- : head1++)] = replaceWith1;
-    tape2[(move2 === 'L' ? head2-- : head2++)] = replaceWith2;
-    tape3[(move3 === 'L' ? head3-- : head3++)] = replaceWith3;
+    tape1[head1] = replaceWith1;
+    tape2[head2] = replaceWith2;
+    if (move1 === 'L') head1--;
+    else if (move1 === 'R') head1++;
+    if (move2 === 'L') head2--;
+    else if (move2 === 'R') head2++;
 
     //obah ceker
     obah = (state === acceptingState[document.getElementById("nav").textContent] ? false : true);
@@ -191,7 +178,6 @@ function action(replaceWith1, replaceWith2, replaceWith3, move1, move2, move3, n
     anim = 1;
     document.getElementsByClassName("popUp1")[0].textContent = replaceWith1;
     document.getElementsByClassName("popUp2")[0].textContent = replaceWith2;
-    document.getElementsByClassName("popUp3")[0].textContent = replaceWith3;
     animatePop();
 }
 
@@ -202,7 +188,7 @@ function display() {
     for (let x = 0, y = tempHead1 - 12; x < 25; x++, y++) {
         //add B to new index nek ora ono isine
         if (typeof tape1[y] == "undefined")
-            tape1[y] = 'B'
+            tape1[y] = 'B';
 
         //output ke masing-masing span
         output1.children[x].children[0].children[0].textContent = tape1[y];
@@ -210,42 +196,33 @@ function display() {
     for (let x = 0, y = tempHead2 - 12; x < 25; x++, y++) {
         //add B to new index nek ora ono isine
         if (typeof tape2[y] == "undefined")
-            tape2[y] = 'B'
+            tape2[y] = 'B';
 
         //output ke masing-masing span
         output2.children[x].children[0].children[0].textContent = tape2[y];
-    }
-    for (let x = 0, y = tempHead3 - 12; x < 25; x++, y++) {
-        //add B to new index nek ora ono isine
-        if (typeof tape3[y] == "undefined")
-            tape3[y] = 'B'
-
-        //output ke masing-masing span
-        output3.children[x].children[0].children[0].textContent = tape3[y];
     }
 
     //display isi tape ke status bar
     tapeOutput1.textContent = "";
     for (let x = 0; x < tape1.length; x++) {
-        if (tape1[x] != 'B')
-            tapeOutput1.textContent += " " + tape1[x] + " ";
+        if (tape1[x] != 'B');
+        tapeOutput1.textContent += " " + tape1[x] + " ";
     }
     tapeOutput2.textContent = "";
     for (let x = 0; x < tape2.length; x++) {
-        if (tape2[x] != 'B')
-            tapeOutput2.textContent += " " + tape2[x] + " ";
+        if (tape2[x] != 'B');
+        tapeOutput2.textContent += " " + tape2[x] + " ";
     }
-    tapeOutput3.textContent = "";
-    for (let x = 0; x < tape3.length; x++) {
-        if (tape3[x] != 'B')
-            tapeOutput3.textContent += " " + tape3[x] + " ";
-    }
+
 
     //tampilin ke status bar nek wes kelar animasi kanan kiwo
     if (anim === 0) {
         //ganti status asep or tidak
-        if (state === acceptingState[document.getElementById("nav").textContent] || !obah)
+        if (state === acceptingState[document.getElementById("nav").textContent] || !obah) {
+            statusOutput.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
+            tapeOutput2.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
             statusOutput.textContent = (state === acceptingState[document.getElementById("nav").textContent] ? "Accepted" : "Rejected");
+        }
         stepCountOutput.textContent = stepCount;
         stateOutput.textContent = "q" + state;
     }
@@ -260,9 +237,7 @@ function animatePop() {
     document.getElementsByClassName("popUp1")[0].classList.toggle("animatePop");
     document.getElementsByClassName("point2")[0].classList.toggle("animatePop");
     document.getElementsByClassName("popUp2")[0].classList.toggle("animatePop");
-    document.getElementsByClassName("point3")[0].classList.toggle("animatePop");
-    document.getElementsByClassName("popUp3")[0].classList.toggle("animatePop");
-    
+
 
     //end animasi display yang sebenarnya
     setTimeout(() => {
@@ -270,16 +245,17 @@ function animatePop() {
         document.getElementsByClassName("popUp1")[0].classList.toggle("animatePop");
         document.getElementsByClassName("point2")[0].classList.toggle("animatePop");
         document.getElementsByClassName("popUp2")[0].classList.toggle("animatePop");
-        document.getElementsByClassName("point3")[0].classList.toggle("animatePop");
-        document.getElementsByClassName("popUp3")[0].classList.toggle("animatePop");
         display();
 
         //tombol reset dan step murup meneh
-       document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = false;
+        document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = false;
     }, animationInterval);
 }
 
 function animateLeft1() {
+    //detek podo pora
+    if (tempHead1 == head1) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
         document.getElementsByClassName("before1")[x].classList.toggle("animateLeft");
@@ -310,6 +286,9 @@ function animateLeft1() {
 }
 
 function animateLeft2() {
+    //detek podo pora
+    if (tempHead2 == head2) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
         document.getElementsByClassName("before2")[x].classList.toggle("animateLeft");
@@ -339,37 +318,10 @@ function animateLeft2() {
     }, animationInterval);
 }
 
-function animateLeft3() {
-    //animasi
-    for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
-        document.getElementsByClassName("before3")[x].classList.toggle("animateLeft");
-    for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
-        document.getElementsByClassName("after3")[x].classList.toggle("animateLeft");
-    document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("beforeFade3")[0].textContent = tape3[tempHead3 - 13]; //trick tengen kiwo
-    document.getElementsByClassName("beforeFade3")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateLeft");
-    document.getElementsByClassName("point3")[0].classList.toggle("animateLeft");
-
-    //end animasi display yang sebenarnya
-    setTimeout(() => {
-        for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
-            document.getElementsByClassName("before3")[x].classList.toggle("animateLeft");
-        for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
-            document.getElementsByClassName("after3")[x].classList.toggle("animateLeft");
-        document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("beforeFade3")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateLeft");
-        document.getElementsByClassName("point3")[0].classList.toggle("animateLeft");
-        tempHead3 = head3; //back to realiti
-    }, animationInterval);
-}
-
 function animateRight1() {
+    //detek podo pora
+    if (tempHead1 == head1) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
         document.getElementsByClassName("before1")[x].classList.toggle("animateRight");
@@ -401,6 +353,9 @@ function animateRight1() {
 }
 
 function animateRight2() {
+    //detek podo pora
+    if (tempHead2 == head2) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
         document.getElementsByClassName("before2")[x].classList.toggle("animateRight");
@@ -428,37 +383,6 @@ function animateRight2() {
         document.getElementsByClassName("afterFade2")[0].classList.toggle("animateRight");
         document.getElementsByClassName("point2")[0].classList.toggle("animateRight");
         tempHead2 = head2; //back to realiti club
-    }, animationInterval);
-}
-
-function animateRight3() {
-    //animasi
-    for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
-        document.getElementsByClassName("before3")[x].classList.toggle("animateRight");
-    for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
-        document.getElementsByClassName("after3")[x].classList.toggle("animateRight");
-    document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateRight");
-    if (typeof tape3[tempHead3 + 13] == "undefined") tape3[tempHead3 + 13] = 'B'; //jogoni undefined
-    document.getElementsByClassName("afterFade3")[0].textContent = tape3[tempHead3 + 13]; //trick tengen kiri
-    document.getElementsByClassName("afterFade3")[0].classList.toggle("animateRight");
-    document.getElementsByClassName("point3")[0].classList.toggle("animateRight");
-
-    //end animasi display yang sebenarnya
-    setTimeout(() => {
-        for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
-            document.getElementsByClassName("before3")[x].classList.toggle("animateRight");
-        for (let x = 0; x < document.getElementsByClassName("after3").length; x++)
-            document.getElementsByClassName("after3")[x].classList.toggle("animateRight");
-        document.getElementsByClassName("beforePoint3")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("beforeEdge3")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("afterPoint3")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("afterEdge3")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("afterFade3")[0].classList.toggle("animateRight");
-        document.getElementsByClassName("point3")[0].classList.toggle("animateRight");
-        tempHead3 = head3; //back to realiti club
     }, animationInterval);
 }
 
@@ -504,8 +428,8 @@ function simulate() {
             break;
         }
     }
-    for (let x = 0; x<2 * head1; x++)
-        tape2[x] = tape3[x] = 'B';
+    for (let x = 0; x < 2 * head1; x++)
+        tape2[x] = 'B';
 
     //mendelik
     display();
@@ -525,8 +449,9 @@ function reset() {
     stateOutput.textContent = "";
     tapeOutput1.textContent = "";
     tapeOutput2.textContent = "";
-    tapeOutput3.textContent = "";
     statusOutput.textContent = "";
+    statusOutput.style.background = "";
+    tapeOutput2.style.background = "";
 
     //ora mlayu
     mlayu = false;
@@ -541,8 +466,6 @@ function reset() {
         output1.children[x].children[0].children[0].textContent = "";
     for (let x = 0; x < output.children.length; x++)
         output2.children[x].children[0].children[0].textContent = "";
-    for (let x = 0; x < output.children.length; x++)
-        output3.children[x].children[0].children[0].textContent = "";
 }
 
 function run() {
