@@ -542,7 +542,7 @@ function subtraction() {
             break;
         case 12:
             if (tape1[head1] === '0' && tape2[head2] === "B") action('B', 'B', 'R', 'S', 12);
-            else if (tape1[head1] === '+' && tape2[head2] === "B") action('B', 'B', 'R', 'S', 13);
+            else if (tape1[head1] === '+' && tape2[head2] === "B") action('+', 'B', 'R', 'S', 13);
             break;
         case 13:
             if (tape1[head1] === '0' && tape2[head2] === "B") action('0', 'B', 'R', 'S', 13);
