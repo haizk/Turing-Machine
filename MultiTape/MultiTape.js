@@ -13,33 +13,43 @@ regex["Binary Logarithm"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
 
 //list asep setate
 var acceptingState = [];
-acceptingState["Addition"] = 21;
-acceptingState["Subtraction"] = 21;
-acceptingState["Multiplication"] = 18;
-acceptingState["Division"] = 17;
-acceptingState["Factorial"] = 24;
-acceptingState["Power"] = 23;
-acceptingState["Square Root"] = 8;
-acceptingState["Binary Logarithm"] = 10;
+acceptingState["Addition"] = 4;
+acceptingState["Subtraction"] = 4;
+acceptingState["Multiplication"] = 10;
+acceptingState["Division"] = 10;
+acceptingState["Factorial"] = 17;
+acceptingState["Power"] = 20;
+acceptingState["Square Root"] = 6;
+acceptingState["Binary Logarithm"] = 9;
 
 //head index mulai dari 15 biar kirinya ada B
-var head = 15;
+var head1 = 15;
+var head2 = 15;
+var head3 = 15;
 
 //buat anim
-var tempHead = head;
+var tempHead1 = head1;
+var tempHead2 = head2;
+var tempHead3 = head3;
 
 //ambil div id output yang udah disiapin
-var output = document.getElementById("output");
+var output1 = document.getElementById("output1");
+var output2 = document.getElementById("output2");
+var output3 = document.getElementById("output3");
 var stepCountOutput = document.getElementById("stepCountOutput");
 var stateOutput = document.getElementById("stateOutput");
-var tapeOutput = document.getElementById("tapeOutput");
+var tapeOutput1 = document.getElementById("tapeOutput1");
+var tapeOutput2 = document.getElementById("tapeOutput2");
+var tapeOutput3 = document.getElementById("tapeOutput3");
 var statusOutput = document.getElementById("statusOutput");
 
 //interval animation
 var animationInterval = 1100;
 
 //init tape array
-var tape = [];
+var tape1 = [];
+var tape2 = [];
+var tape3 = [];
 
 //steps count
 var stepCount = 0;
@@ -61,13 +71,19 @@ var mlayu = false;
 
 function init() {
     //head index mulai dari 15 biar kirinya ada B
-    head = 15;
+    head1 = 15;
+    head2 = 15;
+    head3 = 15;
 
     //buat anim
-    tempHead = head;
+    tempHead1 = head1;
+    tempHead2 = head2;
+    tempHead3 = head3;
 
     //init tape array
-    tape = [];
+    tape1 = [];
+    tape2 = [];
+    tape3 = [];
 
     //steps count
     stepCount = 0;
@@ -134,12 +150,14 @@ function step() {
         }
     } else {
         //deteksi animasi ke kiri or tengen
-        (tempHead > head ? animateLeft() : animateRight());
+        (tempHead1 > head1 ? animateLeft1() : animateRight1());
+        (tempHead2 > head2 ? animateLeft2() : animateRight2());
+        (tempHead3 > head3 ? animateLeft3() : animateRight3());
         anim = 0;
     }
 }
 
-function action(replaceWith, move, newState) {
+function action(replaceWith1, replaceWith2, replaceWith3, move1, move2, move3, newState) {
     //mlaku nambah
     stepCount += 1;
 
@@ -147,17 +165,23 @@ function action(replaceWith, move, newState) {
     state = newState;
 
     //buat anim
-    tempHead = head;
+    tempHead1 = head1;
+    tempHead2 = head2;
+    tempHead3 = head3;
 
     //ganti isi tape, geser kanan kiwo
-    tape[(move === 'L' ? head-- : head++)] = replaceWith;
+    tape1[(move1 === 'L' ? head1-- : head1++)] = replaceWith1;
+    tape1[(move2 === 'L' ? head2-- : head2++)] = replaceWith2;
+    tape1[(move3 === 'L' ? head3-- : head3++)] = replaceWith3;
 
     //obah ceker
     obah = (state === acceptingState[document.getElementById("nav").textContent] ? false : true);
 
     //lanjut anim
     anim = 1;
-    document.getElementsByClassName("popUp")[0].textContent = replaceWith;
+    document.getElementsByClassName("popUp1")[0].textContent = replaceWith1;
+    document.getElementsByClassName("popUp2")[0].textContent = replaceWith2;
+    document.getElementsByClassName("popUp3")[0].textContent = replaceWith3;
     animatePop();
 }
 
@@ -165,20 +189,44 @@ function action(replaceWith, move, newState) {
 //START TAMPILAN ANIMASI//
 
 function display() {
-    for (let x = 0, y = tempHead - 12; x < 25; x++, y++) {
+    for (let x = 0, y = tempHead1 - 12; x < 25; x++, y++) {
         //add B to new index nek ora ono isine
-        if (typeof tape[y] == "undefined")
-            tape[y] = 'B'
+        if (typeof tape1[y] == "undefined")
+            tape1[y] = 'B'
 
         //output ke masing-masing span
-        output.children[x].children[0].children[0].textContent = tape[y];
+        output1.children[x].children[0].children[0].textContent = tape1[y];
+    }
+    for (let x = 0, y = tempHead2 - 12; x < 25; x++, y++) {
+        //add B to new index nek ora ono isine
+        if (typeof tape2[y] == "undefined")
+            tape2[y] = 'B'
+
+        //output ke masing-masing span
+        output2.children[x].children[0].children[0].textContent = tape2[y];
+    }
+    for (let x = 0, y = tempHead3 - 12; x < 25; x++, y++) {
+        //add B to new index nek ora ono isine
+        if (typeof tape3[y] == "undefined")
+            tape3[y] = 'B'
+
+        //output ke masing-masing span
+        output3.children[x].children[0].children[0].textContent = tape3[y];
     }
 
     //display isi tape ke status bar
-    tapeOutput.textContent = "";
-    for (let x = 0; x < tape.length; x++) {
-        if (tape[x] != 'B')
-            tapeOutput.textContent += " " + tape[x] + " ";
+    tapeOutput1.textContent = "";
+    for (let x = 0; x < tape1.length; x++) {
+        if (tape1[x] != 'B')
+            tapeOutput1.textContent += " " + tape1[x] + " ";
+    }
+    for (let x = 0; x < tape2.length; x++) {
+        if (tape2[x] != 'B')
+            tapeOutput2.textContent += " " + tape2[x] + " ";
+    }
+    for (let x = 0; x < tape3.length; x++) {
+        if (tape3[x] != 'B')
+            tapeOutput3.textContent += " " + tape3[x] + " ";
     }
 
     //tampilin ke status bar nek wes kelar animasi kanan kiwo
