@@ -184,8 +184,11 @@ function display() {
     //tampilin ke status bar nek wes kelar animasi kanan kiwo
     if (anim === 0) {
         //ganti status asep or tidak
-        if (state === acceptingState[document.getElementById("nav").textContent] || !obah)
+        if (state === acceptingState[document.getElementById("nav").textContent] || !obah) {
+            statusOutput.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
+            tapeOutput.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
             statusOutput.textContent = (state === acceptingState[document.getElementById("nav").textContent] ? "Accepted" : "Rejected");
+        }
         stepCountOutput.textContent = stepCount;
         stateOutput.textContent = "q" + state;
     }
@@ -348,6 +351,8 @@ function reset() {
     stateOutput.textContent = "";
     tapeOutput.textContent = "";
     statusOutput.textContent = "";
+    statusOutput.style.background = "";
+    tapeOutput.style.background = "";
 
     //ora mlayu
     mlayu = false;
