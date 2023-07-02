@@ -405,7 +405,7 @@ function animateRight1() {
 function animateRight2() {
     //detek podo pora
     if (tempHead2 == head2) return;
-    
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
         document.getElementsByClassName("before2")[x].classList.toggle("animateRight");
