@@ -560,6 +560,12 @@
         //START TOMBOL//
 
         function simulate() {
+            //detek regex
+            if(!(/^(\s*[+-][\s0]*[+-][\s0]*)$/.test(document.getElementById("input-string").value))) {
+                alert("Format string tidak sesuai!\nFormat: " + document.getElementById("input-string").getAttribute("placeholder"));
+                return;
+            }
+
             //enable-disable button
             document.getElementById("input-string").disabled = true;
             document.getElementById("input-sim").disabled = true;
@@ -578,8 +584,13 @@
                     tape[x] = 'B';
                 else {
                     //dari input
-                    for (let y = 0; y < document.getElementById("input-string").value.length; y++, x++)
-                        tape[x] = (document.getElementById("input-string").value)[y];
+                    for (let y = 0; y < document.getElementById("input-string").value.length; y++, x++) {
+                        //kalo space diskip gamashok tape
+                        if(((document.getElementById("input-string").value)[y] != ' '))
+                            tape[x] = (document.getElementById("input-string").value)[y];
+                        else
+                            x--;
+                    }
 
                     //jogoni setelah input kei B
                     for (let y = 0; y < head; y++, x++)
