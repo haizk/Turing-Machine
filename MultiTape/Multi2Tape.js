@@ -114,12 +114,6 @@ function step() {
                 case "Subtraction":
                     subtraction();
                     break;
-                case "Multiplication":
-                    multiplication();
-                    break;
-                case "Division":
-                    division();
-                    break;
                 case "Factorial":
                     factorial();
                     break;
