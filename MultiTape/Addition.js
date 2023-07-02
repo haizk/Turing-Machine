@@ -1,4 +1,4 @@
-function multiplication() {
+function addition() {
     switch (state) {
         case 1:
             if (tape1[head1] === '+' && tape2[head2] === "B") action('+', '+', 'R', 'R', 2);
