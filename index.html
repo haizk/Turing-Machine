@@ -11,6 +11,11 @@
             font-size: medium;
         }
 
+        main {
+            display: inline-flex;
+            flex-direction: column;
+        }
+
         .container {
             padding: 10px;
             display: inline-flex;
@@ -22,7 +27,7 @@
             margin: 10px;
         }
 
-        #singleTape, #doubleTape {
+        .tape {
             padding: 10px;
         }
 
@@ -40,33 +45,47 @@
         </h2>
     </nav>
 
-    <div class="container">
-        <div>Single Tape</div>
-        <div id="singleTape">
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
+    <main>
+        <div class="container">
+            <div>Single Tape</div>
+            <div class="tape">
+                <a href="./SingleTape/Addition.html"><button>Addition</button></a>
+                <a href="./SingleTape/Subtraction.html"><button>Subtraction</button></a>
+                <a href="./SingleTape/Multiplication.html"><button>Multiplication</button></a>
+                <a href="./SingleTape/Division.html"><button>Division</button></a>
+                <a href="./SingleTape/Factorial.html"><button>Factorial</button></a>
+                <a href="./SingleTape/Power.html"><button>Power</button></a>
+                <a href="./SingleTape/SquareRoot.html"><button>Square Root</button></a>
+                <a href="./SingleTape/BinaryLogarithm.html"><button>Binary Logarithm</button></a>
+            </div>
         </div>
-    </div>
 
-    <div class="container">
-        <div>Double Tape</div>
-        <div id="doubleTape">
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
-            <button>asd</button>
+        <div class="container">
+            <div>Double Tape</div>
+            <div class="tape">
+                <a href="./MultiTape/Addition.html"><button>Addition</button></a>
+                <a href="./MultiTape/Subtraction.html"><button>Subtraction</button></a>
+                <a href="./MultiTape/Multiplication.html"><button>Multiplication</button></a>
+                <a href="./MultiTape/Division.html"><button>Division</button></a>
+                <a href="./MultiTape/Factorial.html"><button>Factorial</button></a>
+                <a href="./MultiTape/Power.html"><button>Power</button></a>
+                <a href="./MultiTape/SquareRoot.html"><button>Square Root</button></a>
+                <a href="./MultiTape/BinaryLogarithm.html"><button>Binary Logarithm</button></a>
+            </div>
         </div>
-    </div>
+
+        <div class="container">
+            <div>Tutorial</div>
+            <embed
+                src=""
+                type="application/pdf"
+                frameBorder="0"
+                scrolling="auto"
+                height="100%"
+                width="100%"
+            ></embed>
+        </div>
+    </main>
     
 </body>
 

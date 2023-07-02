@@ -2,21 +2,21 @@
 
 //list regex
 var regex = [];
-regex["Addition"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/);
-regex["Subtraction"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/);
-regex["Multiplication"] = new RegExp(/^\s*[+-][\s0]*[+-][\s0]*1\s*$/);
-regex["Divide"] = new RegExp(/^\s*[+-][\s0]*[+-][\s0]*1\s*$/);
-regex["Factorial"] = new RegExp(/^[\s0]*1\s*$/);
-regex["Power"] = new RegExp(/^[\s0]*1[\s0]*1\s*$/);
-regex["Square Root"] = new RegExp(/^[\s0]*1\s*$/);
-regex["Binary Logarithm"] = new RegExp(/^[\s0]*1\s*$/);
+regex["Addition"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/); //[+-]0*[+-]0*
+regex["Subtraction"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/); //[+-]0*[+-]0*
+regex["Multiplication"] = new RegExp(/^\s*[+-]\s*0[\s0]*[+-]\s*0[\s0]*1\s*$/); //[+-]00*[+-]00*1
+regex["Division"] = new RegExp(/^\s*[+-]\s*0[\s0]*[+-]\s*0[\s0]*1\s*$/); //[+-]00*[+-]00*1
+regex["Factorial"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
+regex["Power"] = new RegExp(/^\s*0[\s0]*1\s*0[\s0]*1\s*$/); //00*00*1
+regex["Square Root"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
+regex["Binary Logarithm"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
 
 //list asep setate
 var acceptingState = [];
 acceptingState["Addition"] = 21;
 acceptingState["Subtraction"] = 21;
 acceptingState["Multiplication"] = 18;
-acceptingState["Divide"] = 17;
+acceptingState["Division"] = 17;
 acceptingState["Factorial"] = 24;
 acceptingState["Power"] = 23;
 acceptingState["Square Root"] = 8;
@@ -109,8 +109,8 @@ function step() {
                 case "Multiplication":
                     multiplication();
                     break;
-                case "Divide":
-                    divide();
+                case "Division":
+                    division();
                     break;
                 case "Factorial":
                     factorial();
@@ -192,8 +192,8 @@ function display() {
 }
 
 function animatePop() {
-    //matiin tombol step
-    document.getElementById("input-step").disabled = true;
+    //matiin tombol reset dan step
+    document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = true;
 
     //animasi
     document.getElementsByClassName("point")[0].classList.toggle("animatePop");
@@ -205,14 +205,14 @@ function animatePop() {
         document.getElementsByClassName("popUp")[0].classList.toggle("animatePop");
         display();
 
-        //tombol step murup meneh
-        document.getElementById("input-step").disabled = false;
+        //tombol reset dan step murup meneh
+       document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = false;
     }, animationInterval);
 }
 
 function animateLeft() {
-    //matiin tombol step
-    document.getElementById("input-step").disabled = true;
+    //matiin tombol reset dan step
+    document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = true;
 
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before").length; x++)
@@ -242,14 +242,15 @@ function animateLeft() {
         tempHead = head; //back to realiti
         display();
 
-        //tombol step murop maneh
+        //tombol step murop porak mboh, nek reset murop
         document.getElementById("input-step").disabled = (!obah ? true : false);
+        document.getElementById("input-reset").disabled = false;
     }, animationInterval);
 }
 
 function animateRight() {
     //matiin tombol step
-    document.getElementById("input-step").disabled = true;
+    document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = true;
 
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before").length; x++)
@@ -280,8 +281,9 @@ function animateRight() {
         tempHead = head; //back to realiti club
         display();
 
-        //tombol step murooppp
+        //tombol step murop porak mboh, nek reset murop
         document.getElementById("input-step").disabled = (!obah ? true : false);
+        document.getElementById("input-reset").disabled = false;
     }, animationInterval);
 }
 
@@ -482,7 +484,7 @@ function addition() {
             break;
         case 19:
             if (tape[head] === '-') action('1', 'R', acceptingState[document.getElementById("nav").textContent]);
-            else if (tape[head] === '+') action('+', 'R', acceptingState[document.getElementById("nav").textContent]);
+            else if (tape[head] === '+') action('1', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 20:
             if (tape[head] === '0') action('0', 'R', 20);
@@ -582,7 +584,7 @@ function subtraction() {
             break;
         case 19:
             if (tape[head] === '-') action('1', 'R', acceptingState[document.getElementById("nav").textContent]);
-            else if (tape[head] === '+') action('+', 'R', acceptingState[document.getElementById("nav").textContent]);
+            else if (tape[head] === '+') action('1', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 20:
             if (tape[head] === '0') action('0', 'R', 20);
@@ -675,7 +677,7 @@ function multiplication() {
     }
 }
 
-function divide() {
+function division() {
     switch (state) {
         case 1:
             if (tape[head] === '+') action('B', 'R', 2);
