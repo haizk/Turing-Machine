@@ -695,10 +695,7 @@ function power() {
             break;
         case 18:
             if (tape1[head1] === '0' && tape2[head2] === "B") action('0', 'B', 'R', 'S', 18);
-            else if (tape1[head1] === 'B' && tape2[head2] === "B") action('1', 'B', 'R', 'S', 19);
-            break;
-        case 19:
-            if (tape1[head1] === 'B' && tape2[head2] === "B") action('1', 'B', 'R', 'S', acceptingState[document.getElementById("nav").textContent]);
+            else if (tape1[head1] === 'B' && tape2[head2] === "B") action('1', 'B', 'R', 'S', acceptingState[document.getElementById("nav").textContent]);
             break;
     }
 }
