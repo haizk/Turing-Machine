@@ -7,7 +7,7 @@ regex["Subtraction"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/); //[+-]0*[+-]0*
 regex["Multiplication"] = new RegExp(/^\s*[+-]\s*0[\s0]*[+-]\s*0[\s0]*1\s*$/); //[+-]00*[+-]00*1
 regex["Division"] = new RegExp(/^\s*[+-]\s*0[\s0]*[+-]\s*0[\s0]*1\s*$/); //[+-]00*[+-]00*1
 regex["Factorial"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
-regex["Power"] = new RegExp(/^\s*0[\s0]*1\s*0[\s0]*1\s*$/); //00*00*1
+regex["Power"] = new RegExp(/^\s*0[\s0]*1\s*0[\s0]*1\s*$/); //00*100*1
 regex["Square Root"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
 regex["Binary Logarithm"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
 
