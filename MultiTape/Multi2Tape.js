@@ -170,9 +170,9 @@ function action(replaceWith1, replaceWith2, move1, move2, newState) {
     tempHead2 = head2;
 
     //ganti isi tape, geser kanan kiwo
-    if(move1 != 'S')
+    if (move1 != 'S')
         tape1[(move1 === 'L' ? head1-- : head1++)] = replaceWith1;
-    if(move2 != 'S')
+    if (move2 != 'S')
         tape2[(move2 === 'L' ? head2-- : head2++)] = replaceWith2;
 
     //obah ceker
@@ -180,9 +180,9 @@ function action(replaceWith1, replaceWith2, move1, move2, newState) {
 
     //lanjut anim
     anim = 1;
-    if(move1 != 'S')
+    if (move1 != 'S')
         document.getElementsByClassName("popUp1")[0].textContent = replaceWith1;
-    if(move1 != 'S')
+    if (move1 != 'S')
         document.getElementsByClassName("popUp2")[0].textContent = replaceWith2;
     animatePop();
 }
@@ -194,7 +194,7 @@ function display() {
     for (let x = 0, y = tempHead1 - 12; x < 25; x++, y++) {
         //add B to new index nek ora ono isine
         if (typeof tape1[y] == "undefined")
-            tape1[y] = 'B'
+            tape1[y] = 'B';
 
         //output ke masing-masing span
         output1.children[x].children[0].children[0].textContent = tape1[y];
@@ -202,7 +202,7 @@ function display() {
     for (let x = 0, y = tempHead2 - 12; x < 25; x++, y++) {
         //add B to new index nek ora ono isine
         if (typeof tape2[y] == "undefined")
-            tape2[y] = 'B'
+            tape2[y] = 'B';
 
         //output ke masing-masing span
         output2.children[x].children[0].children[0].textContent = tape2[y];
@@ -211,13 +211,13 @@ function display() {
     //display isi tape ke status bar
     tapeOutput1.textContent = "";
     for (let x = 0; x < tape1.length; x++) {
-        if (tape1[x] != 'B')
-            tapeOutput1.textContent += " " + tape1[x] + " ";
+        if (tape1[x] != 'B');
+        tapeOutput1.textContent += " " + tape1[x] + " ";
     }
     tapeOutput2.textContent = "";
     for (let x = 0; x < tape2.length; x++) {
-        if (tape2[x] != 'B')
-            tapeOutput2.textContent += " " + tape2[x] + " ";
+        if (tape2[x] != 'B');
+        tapeOutput2.textContent += " " + tape2[x] + " ";
     }
 
 
@@ -240,7 +240,7 @@ function animatePop() {
     document.getElementsByClassName("popUp1")[0].classList.toggle("animatePop");
     document.getElementsByClassName("point2")[0].classList.toggle("animatePop");
     document.getElementsByClassName("popUp2")[0].classList.toggle("animatePop");
-    
+
 
     //end animasi display yang sebenarnya
     setTimeout(() => {
@@ -251,7 +251,7 @@ function animatePop() {
         display();
 
         //tombol reset dan step murup meneh
-       document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = false;
+        document.getElementById("input-reset").disabled = document.getElementById("input-step").disabled = false;
     }, animationInterval);
 }
 
@@ -324,7 +324,7 @@ function animateLeft2() {
 function animateRight1() {
     //detek podo pora
     if (tempHead1 == head1) return;
-    
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
         document.getElementsByClassName("before1")[x].classList.toggle("animateRight");
@@ -431,7 +431,7 @@ function simulate() {
             break;
         }
     }
-    for (let x = 0; x<2 * head1; x++)
+    for (let x = 0; x < 2 * head1; x++)
         tape2[x] = 'B';
 
     //mendelik
