@@ -162,24 +162,24 @@ function action(replaceWith1, replaceWith2, replaceWith3, move1, move2, move3, n
     tempHead3 = head3;
 
     //ganti isi tape, geser kanan kiwo
-    if (move1 != 'S')
-        tape1[(move1 === 'L' ? head1-- : head1++)] = replaceWith1;
-    if (move2 != 'S')
-        tape2[(move2 === 'L' ? head2-- : head2++)] = replaceWith2;
-    if (move3 != 'S')
-        tape3[(move3 === 'L' ? head3-- : head3++)] = replaceWith3;
+    tape1[head1] = replaceWith1;
+    tape2[head2] = replaceWith2;
+    tape3[head3] = replaceWith3;
+    if (move1 === 'L') head1--;
+    else if (move1 === 'R') head1++;
+    if (move2 === 'L') head2--;
+    else if (move2 === 'R') head2++;
+    if (move3 === 'L') head3--;
+    else if (move3 === 'R') head3++;
 
     //obah ceker
     obah = (state === acceptingState[document.getElementById("nav").textContent] ? false : true);
 
     //lanjut anim
     anim = 1;
-    if (move1 != 'S')
-        document.getElementsByClassName("popUp1")[0].textContent = replaceWith1;
-    if (move2 != 'S')
-        document.getElementsByClassName("popUp2")[0].textContent = replaceWith2;
-    if (move3 != 'S')
-        document.getElementsByClassName("popUp3")[0].textContent = replaceWith3;
+    document.getElementsByClassName("popUp1")[0].textContent = replaceWith1;
+    document.getElementsByClassName("popUp2")[0].textContent = replaceWith2;
+    document.getElementsByClassName("popUp3")[0].textContent = replaceWith3;
     animatePop();
 }
 
@@ -232,8 +232,11 @@ function display() {
     //tampilin ke status bar nek wes kelar animasi kanan kiwo
     if (anim === 0) {
         //ganti status asep or tidak
-        if (state === acceptingState[document.getElementById("nav").textContent] || !obah)
+        if (state === acceptingState[document.getElementById("nav").textContent] || !obah) {
+            statusOutput.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
+            tapeOutput3.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
             statusOutput.textContent = (state === acceptingState[document.getElementById("nav").textContent] ? "Accepted" : "Rejected");
+        }
         stepCountOutput.textContent = stepCount;
         stateOutput.textContent = "q" + state;
     }
@@ -267,6 +270,9 @@ function animatePop() {
 }
 
 function animateLeft1() {
+    //detek podo pora
+    if (tempHead1 == head1) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
         document.getElementsByClassName("before1")[x].classList.toggle("animateLeft");
@@ -297,6 +303,9 @@ function animateLeft1() {
 }
 
 function animateLeft2() {
+    //detek podo pora
+    if (tempHead2 == head2) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
         document.getElementsByClassName("before2")[x].classList.toggle("animateLeft");
@@ -327,6 +336,9 @@ function animateLeft2() {
 }
 
 function animateLeft3() {
+    //detek podo pora
+    if (tempHead3 == head3) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
         document.getElementsByClassName("before3")[x].classList.toggle("animateLeft");
@@ -357,6 +369,9 @@ function animateLeft3() {
 }
 
 function animateRight1() {
+    //detek podo pora
+    if (tempHead1 == head1) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before1").length; x++)
         document.getElementsByClassName("before1")[x].classList.toggle("animateRight");
@@ -388,6 +403,9 @@ function animateRight1() {
 }
 
 function animateRight2() {
+    //detek podo pora
+    if (tempHead2 == head2) return;
+    
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before2").length; x++)
         document.getElementsByClassName("before2")[x].classList.toggle("animateRight");
@@ -419,6 +437,9 @@ function animateRight2() {
 }
 
 function animateRight3() {
+    //detek podo pora
+    if (tempHead3 == head3) return;
+
     //animasi
     for (let x = 0; x < document.getElementsByClassName("before3").length; x++)
         document.getElementsByClassName("before3")[x].classList.toggle("animateRight");
@@ -514,6 +535,8 @@ function reset() {
     tapeOutput2.textContent = "";
     tapeOutput3.textContent = "";
     statusOutput.textContent = "";
+    statusOutput.style.background = "";
+    tapeOutput3.style.background = "";
 
     //ora mlayu
     mlayu = false;

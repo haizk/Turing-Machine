@@ -164,20 +164,20 @@ function action(replaceWith1, replaceWith2, move1, move2, newState) {
     tempHead2 = head2;
 
     //ganti isi tape, geser kanan kiwo
-    if (move1 != 'S')
-        tape1[(move1 === 'L' ? head1-- : head1++)] = replaceWith1;
-    if (move2 != 'S')
-        tape2[(move2 === 'L' ? head2-- : head2++)] = replaceWith2;
+    tape1[head1] = replaceWith1;
+    tape2[head2] = replaceWith2;
+    if (move1 === 'L') head1--;
+    else if (move1 === 'R') head1++;
+    if (move2 === 'L') head2--;
+    else if (move2 === 'R') head2++;
 
     //obah ceker
     obah = (state === acceptingState[document.getElementById("nav").textContent] ? false : true);
 
     //lanjut anim
     anim = 1;
-    if (move1 != 'S')
-        document.getElementsByClassName("popUp1")[0].textContent = replaceWith1;
-    if (move1 != 'S')
-        document.getElementsByClassName("popUp2")[0].textContent = replaceWith2;
+    document.getElementsByClassName("popUp1")[0].textContent = replaceWith1;
+    document.getElementsByClassName("popUp2")[0].textContent = replaceWith2;
     animatePop();
 }
 
@@ -218,8 +218,11 @@ function display() {
     //tampilin ke status bar nek wes kelar animasi kanan kiwo
     if (anim === 0) {
         //ganti status asep or tidak
-        if (state === acceptingState[document.getElementById("nav").textContent] || !obah)
+        if (state === acceptingState[document.getElementById("nav").textContent] || !obah) {
+            statusOutput.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
+            tapeOutput2.style.background = (state === acceptingState[document.getElementById("nav").textContent] ? "green" : "red");
             statusOutput.textContent = (state === acceptingState[document.getElementById("nav").textContent] ? "Accepted" : "Rejected");
+        }
         stepCountOutput.textContent = stepCount;
         stateOutput.textContent = "q" + state;
     }
@@ -447,6 +450,8 @@ function reset() {
     tapeOutput1.textContent = "";
     tapeOutput2.textContent = "";
     statusOutput.textContent = "";
+    statusOutput.style.background = "";
+    tapeOutput2.style.background = "";
 
     //ora mlayu
     mlayu = false;
