@@ -770,6 +770,7 @@ function factorial() {
             break;
         case 16:
             if (tape1[head1] === '0' && tape2[head2] === '0') action('0', '0', 'L', 'S', 16);
+            else if (tape1[head1] === 'B' && tape2[head2] === '0') action('B', '0', 'R', 'S', acceptingState[document.getElementById("nav").textContent]);
             else if (tape1[head1] === '0' && tape2[head2] === 'B') action('0', 'B', 'R', 'S', acceptingState[document.getElementById("nav").textContent]);
             break;
     }
