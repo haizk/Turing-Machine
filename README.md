@@ -1,6 +1,6 @@
 # Turing Machine
 
-Live website: [Turing Machine Simulator](uns.id/hzkTuring)
+Live website: [Turing Machine Simulator](https://uns.id/hzkTuring)
 
 # Kelompok 6
 
