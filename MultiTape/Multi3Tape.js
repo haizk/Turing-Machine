@@ -695,7 +695,7 @@ function binaryLogarithm() {
             else if (tape1[head1] === '1' && tape2[head2] === "B" && tape3[head3] === "B") action('B', 'B', '1', 'S', 'S', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 6:
-            if (tape1[head1] === '1' && tape2[head2] === "B" && tape3[head3] === "B") action('B', 'B', '1', 'S', 'S', 'R', acceptingState[document.getElementById("nav").textContent]);
+            if (tape1[head1] === 'B' && tape2[head2] === "1" && tape3[head3] === "B") action('B', 'B', '1', 'S', 'S', 'R', acceptingState[document.getElementById("nav").textContent]);
             else if (tape1[head1] === 'B' && tape2[head2] === "0" && tape3[head3] === "B") action('0', 'B', 'B', 'L', 'L', 'S', 7);
             break;
         case 7:
