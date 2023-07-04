@@ -984,7 +984,7 @@ function squareRoot() {
             else if (tape[head] === '1') action('B', 'R', 7);
             break;
         case 6:
-            if (tape[head] === 'X') action('X', 'L', 6);
+            if (tape[head] === 'X') action('0', 'L', 6);
             else if (tape[head] === '0') action('0', 'L', 6);
             else if (tape[head] === '1') action('1', 'L', 6);
             else if (tape[head] === 'B') action('B', 'R', 1);
