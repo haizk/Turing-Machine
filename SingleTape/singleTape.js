@@ -2,14 +2,14 @@
 
 //list regex
 var regex = [];
-regex["Addition"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/); //[+-]0*[+-]0*
-regex["Subtraction"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/); //[+-]0*[+-]0*
-regex["Multiplication"] = new RegExp(/^\s*[+-]\s*0[\s0]*[+-]\s*0[\s0]*1\s*$/); //[+-]00*[+-]00*1
-regex["Division"] = new RegExp(/^\s*[+-]\s*0[\s0]*[+-]\s*0[\s0]*1\s*$/); //[+-]00*[+-]00*1
-regex["Factorial"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
-regex["Power"] = new RegExp(/^\s*0[\s0]*1\s*0[\s0]*1\s*$/); //00*100*1
-regex["Square Root"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
-regex["Binary Logarithm"] = new RegExp(/^\s*0[\s0]*1\s*$/); //00*1
+regex["Addition"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/); //[+-]0*[+-]0* BISA LOL
+regex["Subtraction"] = new RegExp(/^(\s*[+-][\s0]*[+-][\s0]*)$/); //[+-]0*[+-]0* BISA LOL
+regex["Multiplication"] = new RegExp(/^\s*[+-][\s0]*[+-][\s0]*1\s*$/); //[+-]00*[+-]00*1 hmm?
+regex["Division"] = new RegExp(/^\s*[+-][\s0]*[+-][\s0]*1\s*$/); //[+-]0*[+-]0*1 lol idk how can it works
+regex["Factorial"] = new RegExp(/^[\s0]*1\s*$/); //0*1 see bisa..
+regex["Power"] = new RegExp(/^[\s0]*1[\s0]*1\s*$/); //0*10*1 bisa..
+regex["Square Root"] = new RegExp(/^[\s0]*1\s*$/); //0*1 BISA LOL 
+regex["Binary Logarithm"] = new RegExp(/^[\s0]*1\s*$/); //00*1 HM OK BISA
 
 //list asep setate
 var acceptingState = [];
@@ -744,7 +744,43 @@ function division() {
             if (tape[head] === '+') action('+', 'L', 13);
             else if (tape[head] === '-') action('-', 'L', 13);
             else if (tape[head] === '0') action('0', 'L', 13);
-            else if (tape[head] === '1') action('1', 'L', 14);
+            else if (tape[head] === '1') action('1', 'L', 18);
+            break;
+        case 18: //0/0 modif here
+            if (tape[head] === 'X') action('0', 'L', 14);
+            else if (tape[head] === '1') action('B', 'L', 19); //0/0
+            break;
+        case 19:
+            if (tape[head] === '0' || tape[head] === '1') action('B', 'L', 19);
+            else if (tape[head] === 'B') action('B', 'R', 20);
+            break;
+        case 20:
+            if (tape[head] === '0' || tape[head] === '1' || tape[head] === 'B') action('B', 'R', 20);
+            else if (tape[head] === '+' || tape[head] === '-') action('U', 'R', 21);
+            break;
+        case 21:
+            action('N', 'R', 22);
+            break;
+        case 22:
+            action('D', 'R', 23);
+            break;
+        case 23:
+            action('E', 'R', 24);
+            break;
+        case 24:
+            action('F', 'R', 25);
+            break;
+        case 25:
+            action('I', 'R', 26);
+            break;
+        case 26:
+            action('N', 'R', 27);
+            break;
+        case 27:
+            action('E', 'R', 28);
+            break;
+        case 28:
+            action('D', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 14:
             if (tape[head] === 'X') action('0', 'L', 14);
@@ -792,6 +828,10 @@ function factorial() {
             break;
         case 7:
             if (tape[head] === '0') action('1', 'L', 8);
+            else if (tape[head] === '1') action('0', 'R', 25);
+            break;
+        case 25: //modif here
+            action('1', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 8:
             if (tape[head] === '0') action('0', 'L', 9);
@@ -864,6 +904,42 @@ function power() {
     switch (state) {
         case 1:
             if (tape[head] === '0') action('0', 'R', 2);
+            else if (tape[head] === '1') action('B', 'R', 24); //modif here
+            break;
+        case 24:
+            if (tape[head] === '0') action('B', 'R', 25); //n^0
+            else if (tape[head] === '1') action('U', 'R', 27); //0^0
+            break;
+        case 25:
+            if (tape[head] === '0') action('B', 'R', 25);
+            else if (tape[head] === '1') action('0', 'R', 26);
+            break;
+        case 26:
+            if (tape[head] === 'B') action('1', 'R', acceptingState[document.getElementById("nav").textContent]);
+            break;
+        case 27:
+            action('N', 'R', 28);
+            break;
+        case 28:
+            action('D', 'R', 29);
+            break;
+        case 29:
+            action('E', 'R', 30);
+            break;
+        case 30:
+            action('F', 'R', 31);
+            break;
+        case 31:
+            action('I', 'R', 32);
+            break;
+        case 32:
+            action('N', 'R', 33);
+            break;
+        case 33:
+            action('E', 'R', 34);
+            break;
+        case 34:
+            action('D', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 2:
             if (tape[head] === '0') action('0', 'R', 3);
@@ -941,6 +1017,7 @@ function power() {
         case 19:
             if (tape[head] === '0') action('B', 'R', 19);
             else if (tape[head] === '1') action('B', 'R', 20);
+            else if (tape[head] === 'B') action('1', 'R', acceptingState[document.getElementById("nav").textContent]); //modif here
             break;
         case 20:
             if (tape[head] === '0') action('0', 'R', 20);
@@ -1002,6 +1079,31 @@ function binaryLogarithm() {
         case 1:
             if (tape[head] === '0') action('X', 'R', 2);
             else if (tape[head] === 'Y') action('Y', 'L', 6);
+            else if (tape[head] === '1') action('U', 'R', 11); //modif here
+            break;
+        case 11:
+            action('N', 'R', 12);
+            break;
+        case 12:
+            action('D', 'R', 13);
+            break;
+        case 13:
+            action('E', 'R', 14);
+            break;
+        case 14:
+            action('F', 'R', 15);
+            break;
+        case 15:
+            action('I', 'R', 16);
+            break;
+        case 16:
+            action('N', 'R', 17);
+            break;
+        case 17:
+            action('E', 'R', 18);
+            break;
+        case 18:
+            action('D', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 2:
             if (tape[head] === '0') action('0', 'R', 3);
