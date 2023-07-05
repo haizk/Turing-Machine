@@ -751,8 +751,12 @@ function division() {
             else if (tape[head] === '1') action('B', 'L', 19); //0/0
             break;
         case 19:
-            if (tape[head] === '0' || tape[head] === '1') action('B', 'L', 19);
-            else if (tape[head] === 'B') action('B', 'R', 20);
+            if (tape[head] === '0' || tape[head] === '1') action('B', 'L', 29);
+            else if (tape[head] === 'B') action('B', 'R', 30); //indeterminate
+            break;
+        case 29:
+            if (tape[head] === '0' || tape[head] === '1') action('B', 'L', 29);
+            else if (tape[head] === 'B') action('B', 'R', 20); //undefined
             break;
         case 20:
             if (tape[head] === '0' || tape[head] === '1' || tape[head] === 'B') action('B', 'R', 20);
@@ -781,6 +785,46 @@ function division() {
             break;
         case 28:
             action('D', 'R', acceptingState[document.getElementById("nav").textContent]);
+            break;
+        case 30:
+            if (tape[head] === '0' || tape[head] === '1' || tape[head] === 'B') action('B', 'R', 30);
+            else if (tape[head] === '+' || tape[head] === '-') action('I', 'R', 31);
+            break;
+        case 31:
+            action('N', 'R', 32);
+            break;
+        case 32:
+            action('D', 'R', 33);
+            break;
+        case 33:
+            action('E', 'R', 34);
+            break;
+        case 34:
+            action('T', 'R', 35);
+            break;
+        case 35:
+            action('E', 'R', 36);
+            break;
+        case 36:
+            action('R', 'R', 37);
+            break;
+        case 37:
+            action('M', 'R', 38);
+            break;
+        case 38:
+            action('I', 'R', 39);
+            break;
+        case 39:
+            action('N', 'R', 40);
+            break;
+        case 40:
+            action('A', 'R', 41);
+            break;
+        case 41:
+            action('T', 'R', 42);
+            break;
+        case 42:
+            action('E', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 14:
             if (tape[head] === 'X') action('0', 'L', 14);
@@ -908,7 +952,7 @@ function power() {
             break;
         case 24:
             if (tape[head] === '0') action('B', 'R', 25); //n^0
-            else if (tape[head] === '1') action('U', 'R', 27); //0^0
+            else if (tape[head] === '1') action('I', 'R', 27); //0^0 indeterminate
             break;
         case 25:
             if (tape[head] === '0') action('B', 'R', 25);
@@ -927,19 +971,31 @@ function power() {
             action('E', 'R', 30);
             break;
         case 30:
-            action('F', 'R', 31);
+            action('T', 'R', 31);
             break;
         case 31:
-            action('I', 'R', 32);
+            action('E', 'R', 32);
             break;
         case 32:
-            action('N', 'R', 33);
+            action('R', 'R', 33);
             break;
         case 33:
-            action('E', 'R', 34);
+            action('M', 'R', 34);
             break;
         case 34:
-            action('D', 'R', acceptingState[document.getElementById("nav").textContent]);
+            action('I', 'R', 35);
+            break;
+        case 35:
+            action('N', 'R', 36);
+            break;
+        case 36:
+            action('A', 'R', 37);
+            break;
+        case 37:
+            action('T', 'R', 38);
+            break;
+        case 38:
+            action('E', 'R', acceptingState[document.getElementById("nav").textContent]);
             break;
         case 2:
             if (tape[head] === '0') action('0', 'R', 3);
