@@ -1,6 +1,6 @@
 # Turing Machine
 
-Live website: [Turing Machine Simulator](https://haizktba.nasihosting.com)
+Live website: [Turing Machine Simulator](https://uns.id/hzkTuring)
 
 # Kelompok 6
 
